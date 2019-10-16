@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
 import { AppService } from '../app.service';
+
+import { Container, Item, Form, Input, Button, Label } from "native-base";
 
 export default class LoginScreen extends React.Component {
     appService = new AppService;
@@ -20,11 +22,11 @@ export default class LoginScreen extends React.Component {
             .then(
                 async (res) => {
                     this.appService.getUserDetails(res.user.uid);
-                    this.props.navigation.navigate('CommissionScreen');
                     this.setState({
                         email: '',
                         password: ''
-                    })
+                    });
+                    this.props.navigation.navigate('CommissionScreen');
                 },
                 err => {
                     Alert.alert(
@@ -33,58 +35,61 @@ export default class LoginScreen extends React.Component {
                     )
                 }
             )
-
     }
     render() {
         return (
-            <View style={styles.container}>
-                <View >
-                    <Text style={styles.title}> Email</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(email) => this.setState({ email })}
-                        placeholder={this.state.emailPlaceholder}
-                        clearButtonMode='always'
-                        underlineColorAndroid='transparent' />
+            <KeyboardAvoidingView behavior="padding" enabled>
+                <ScrollView>
+                    <Container style={styles.container}>
+                        <Form>
+                            <Item floatingLabel>
+                                <Label>Email</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    onChangeText={(email) => this.setState({ email })} />
+                            </Item>
+                            <Item floatingLabel>
+                                <Label>Password</Label>
+                                <Input
+                                    secureTextEntry={true}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    onChangeText={(password) => this.setState({ password })}
+                                />
+                            </Item>
+                            <Button full rounded style={{ marginTop: 20 }} onPress={() => {
+                                this._login();
+                            }}>
+                                <Text>SignIn</Text>
+                            </Button>
 
-                    <Text style={styles.title}> Password</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(password) => this.setState({ password })}
-                        secureTextEntry={true}
-                        clearButtonMode='always'
-                        placeholder={this.state.passswordPlaceholder}
-                        underlineColorAndroid='transparent' />
-                </View>
-                <View style={styles.btnContainer}>
-                    <View style={styles.forgotPassword}>
-                        <Text>Forgot Password?</Text>
-                    </View>
-                    <View style={styles.btnSubmit}>
-                        <TouchableOpacity onPress={() => {
-                            this._login();
-                        }}
-                        >
-                            <Text style={styles.btnText}>Login</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={styles.bottomContainer}>
-                    <TouchableOpacity onPress={async () => {
-                        this.props.navigation.navigate('RegisterScreen')
-                    }}>
-                        <Text style={styles.notRegisteredYet}>Not Registered Yet? Register.</Text>
-                    </TouchableOpacity>
-                </View>
-
-            </View >
+                            <Button full rounded success style={{ marginTop: 20 }} onPress={() => {
+                                this.props.navigation.navigate('RegisterScreen');
+                            }}>
+                                <Text>Signup</Text>
+                            </Button>
+                            <View style={styles.forgotPassword}>
+                                <Text>Forgot Password?</Text>
+                            </View>
+                        </Form>
+                    </Container>
+                </ScrollView>
+            </KeyboardAvoidingView>
         );
     }
 }
 const styles = StyleSheet.create({
+    forgotPassword: {
+        padding: 10,
+        marginTop: 5,
+        color: 'blue'
+    },
     container: {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
+        backgroundColor: '#fff',
+        padding: 10
     },
     inputStyle: {
         height: 35,

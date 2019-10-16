@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Picker } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import { Container, Item, Form, Input, Button, Label, Icon, Picker } from "native-base";
 
 export default class CommissionInfoScreen extends React.Component {
     comData = {};
@@ -15,11 +16,11 @@ export default class CommissionInfoScreen extends React.Component {
                             'Are you sure you want to logout?',
                             [
                                 { text: 'Ok', onPress: () => navigation.navigate('LogoutScreen') }
-            
+
                             ],
                             { cancelable: false }
                         )
-                        
+
                     }}>
                     LOGOUT
                 </Text>
@@ -59,97 +60,97 @@ export default class CommissionInfoScreen extends React.Component {
         this.comData = navigation.state.params.CommissionData;
         console.log('State: ', this.state);
         return (
-            <View style={styles.container}>
-                <View style={{ flexDirection: 'column', marginTop: 20 }} >
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+                <ScrollView>
+                    <Container >
+                        <Form>
+                            <Item floatingLabel>
+                                <Label>Meter Number</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    onChangeText={(meter_number) => this.setState({ meter_number })} />
+                            </Item>
+                            <Item floatingLabel>
+                                <Label>Meter Type </Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    onChangeText={(meter_type) => this.setState({ meter_type })} />
+                            </Item>
+                            <Item floatingLabel>
+                                <Label>Moden Number</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    onChangeText={(modem_number) => this.setState({ modem_number })} />
+                            </Item>
+                            <Item floatingLabel>
+                                <Label>Sim Card Number</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    onChangeText={(sim_card_no) => this.setState({ sim_card_no })} />
+                            </Item>
+                            <Item floatingLabel>
+                                <Label>Meter Physical Location</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    onChangeText={(meter_physical_location) => this.setState({ meter_physical_location })} />
+                            </Item>
+                            <Item floatingLabel style={{ marginBottom: 10 }}>
+                                <Label>CT Ratio</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    onChangeText={(CT_Ratio) => this.setState({ CT_Ratio })} />
+                            </Item>
+                            <View style={{ padding: 10 }}>
+                                <Item picker>
+                                    <Label>Antenna</Label>
+                                    <Picker
+                                        style={styles.picker} itemStyle={styles.pickerItem}
+                                        selectedValue={this.state.Antenna}
+                                        placeholder="Select Antenna"
+                                        onValueChange={(itemValue, itemIndex) => this.setState({ Antenna: itemValue })}>
+                                        <Picker.Item label="Select" value="" />
+                                        <Picker.Item label="Yes" value="Yes" />
+                                        <Picker.Item label="No" value="No" />
+                                    </Picker>
+                                </Item>
 
-                    <Text style={styles.title}>Meter Number</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(meter_number) => this.setState({ meter_number })}
-                        underlineColorAndroid='transparent' />
+                                <Item picker>
+                                    <Label>CT Visible</Label>
+                                    <Picker
+                                        style={styles.picker} itemStyle={styles.pickerItem}
+                                        selectedValue={this.state.CT_Visible}
+                                        onValueChange={(itemValue, itemIndex) => this.setState({ CT_Visible: itemValue })}>
+                                        <Picker.Item label="Select" value="" />
+                                        <Picker.Item label="Yes" value="Yes" />
+                                        <Picker.Item label="No" value="No" />
+                                    </Picker>
+                                </Item>
 
-                    <Text style={styles.title}>Meter Type</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(meter_type) => this.setState({ meter_type })}
-                        underlineColorAndroid='transparent' />
+                                <Item picker>
+                                    <Label>APN Correct</Label>
+                                    <Picker
+                                        selectedValue={this.state.APN_correct}
+                                        style={styles.picker} itemStyle={styles.pickerItem}
+                                        onValueChange={(itemValue, itemIndex) => this.setState({ APN_correct: itemValue })}>
+                                        <Picker.Item label="Select" value="" />
+                                        <Picker.Item label="Yes" value="Yes" />
+                                        <Picker.Item label="No" value="No" />
+                                    </Picker>
+                                </Item>
 
-                    <Text style={styles.title}>Modem Number</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(modem_number) => this.setState({ modem_number })}
-                        underlineColorAndroid='transparent' />
-
-                    <Text style={styles.title}>Sim Card Number</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(sim_card_no) => this.setState({ sim_card_no })}
-                        underlineColorAndroid='transparent' />
-
-                    <Text style={styles.title}> Meter Physical Location</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(meter_physical_location) => this.setState({ meter_physical_location })}
-                        underlineColorAndroid='transparent' />
-
-                    <Text style={styles.title}> CT Ratio</Text>
-                    <TextInput style={styles.inputStyle}
-                        onChangeText={(CT_Ratio) => this.setState({ CT_Ratio })}
-                        underlineColorAndroid='transparent' />
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <View style={styles.selectP}>
-                            <Text style={styles.title}> Antenna</Text>
-                            <Picker
-                                style={styles.picker} itemStyle={styles.pickerItem}
-                                selectedValue={this.state.Antenna}
-                                onValueChange={(itemValue, itemIndex) => this.setState({ Antenna: itemValue })}>
-                                <Picker.Item label="Select" value="" />
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
-                            </Picker>
-                        </View>
-
-                        <View style={styles.selectP}>
-                            <Text style={styles.title}> CT Visible</Text>
-                            <Picker
-                                style={styles.picker} itemStyle={styles.pickerItem}
-                                selectedValue={this.state.CT_Visible}
-                                onValueChange={(itemValue, itemIndex) => this.setState({ CT_Visible: itemValue })}>
-                                <Picker.Item label="Select" value="" />
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
-                            </Picker>
-                        </View>
-                        <View style={styles.selectP}>
-                            <Text style={styles.title}> APN Correct</Text>
-                            <Picker
-                                selectedValue={this.state.APN_correct}
-                                style={styles.picker} itemStyle={styles.pickerItem}
-                                onValueChange={(itemValue, itemIndex) => this.setState({ APN_correct: itemValue })}>
-                                <Picker.Item label="Select" value="" />
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
-                            </Picker>
-                        </View>
-                        {/* 
-                        <View style={styles.selectP}>
-                            <Text style={styles.title}> Meter Report</Text>
-                            <Picker
-                                selectedValue={this.state.APN_correct}
-                                style={styles.picker} itemStyle={styles.pickerItem}
-                                onValueChange={(itemValue, itemIndex) => this.setState({ meter_report: itemValue })}>
-                                <Picker.Item label="Yes" value="Yes" />
-                                <Picker.Item label="No" value="No" />
-                            </Picker>
-                        </View> */}
-                    </View>
-                </View>
-                <View style={styles.btnContainer}>
-                    <View style={styles.btnSubmit}>
-                        <TouchableOpacity onPress={() => {
-                            this._commissionNext();
-                        }}>
-                            <Text style={styles.btnText}>Next</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
+                                <Item picker>
+                                    <Label>Meter Report</Label>
+                                    <Picker
+                                        selectedValue={this.state.meter_report}
+                                        style={styles.picker} itemStyle={styles.pickerItem}
+                                        onValueChange={(itemValue, itemIndex) => this.setState({ meter_report: itemValue })}>
+                                        <Picker.Item label="Select" value="" />
+                                        <Picker.Item label="Yes" value="Yes" />
+                                        <Picker.Item label="No" value="No" />
+                                    </Picker>
+                                </Item>
+                                <Button full rounded style={{ marginTop: 10, backgroundColor: 'green' }} onPress={() => {
+                                this._commissionNext();
+                            }}><Text style={styles.btnText}>Next</Text></Button>
+                            </View> 
+                        </Form>
+                    </Container>
+                </ScrollView>
+            </KeyboardAvoidingView>
         )
     }
 }
@@ -160,6 +161,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
+        marginTop: 20,
+        paddingLeft: 10,
+        paddingRight: 10
     },
     selectP: {
         flexDirection: 'column'
@@ -204,6 +208,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderColor: 'black',
         borderWidth: 1,
+        padding: 10
     },
     pickerItem: {
         color: 'red'
