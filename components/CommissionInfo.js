@@ -204,9 +204,7 @@ const styles = StyleSheet.create({
         margin: '5%'
     },
     picker: {
-        width: 100,
         height: 30,
-        borderColor: 'black',
         borderWidth: 1,
         padding: 10
     },

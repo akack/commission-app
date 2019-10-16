@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Picker } from 'react-native';
-import { Container, Item, Form, Input, Button, Label } from "native-base";
+import { Container, Item, Form, Input, Button, Label, Icon } from "native-base";
 import { KeyboardAvoidingView, ScrollView } from 'react-native';
 
 export default class MeterAccuracyTest extends React.Component {
@@ -67,9 +67,12 @@ export default class MeterAccuracyTest extends React.Component {
                     <Container >
                         <Form>
                             <View style={{ padding: 10 }}>
+                                <Label>Down Load History Data</Label>
                                 <Item picker>
-                                    <Label>Down Load History Data</Label>
+
                                     <Picker
+                                        mode="dropdown"
+                                        iosIcon={<Icon name="arrow-down" />}
                                         style={styles.picker} itemStyle={styles.pickerItem}
                                         selectedValue={this.state.down_load_his_data}
                                         onValueChange={(itemValue, itemIndex) => this.setState({ down_load_his_data: itemValue })}>
@@ -78,12 +81,29 @@ export default class MeterAccuracyTest extends React.Component {
                                         <Picker.Item label="No" value="No" />
                                     </Picker>
                                 </Item>
+
+                                <Label>Meter Commissioning Report</Label>
                                 <Item picker>
-                                    <Label>Meter Commissioning Report</Label>
                                     <Picker
+                                        mode="dropdown"
+                                        iosIcon={<Icon name="arrow-down" />}
                                         style={styles.picker} itemStyle={styles.pickerItem}
                                         selectedValue={this.state.meter_commissioning_report}
                                         onValueChange={(itemValue, itemIndex) => this.setState({ meter_commissioning_report: itemValue })}>
+                                        <Picker.Item label="Select" value="" />
+                                        <Picker.Item label="Yes" value="Yes" />
+                                        <Picker.Item label="No" value="No" />
+                                    </Picker>
+                                </Item>
+
+                                <Label>Speed Test Done</Label>
+                                <Item picker>
+                                    <Picker
+                                        mode="dropdown"
+                                        iosIcon={<Icon name="arrow-down" />}
+                                        style={styles.picker} itemStyle={styles.pickerItem}
+                                        selectedValue={this.state.speed_test_done}
+                                        onValueChange={(itemValue, itemIndex) => this.setState({ speed_test_result: itemValue })}>
                                         <Picker.Item label="Select" value="" />
                                         <Picker.Item label="Yes" value="Yes" />
                                         <Picker.Item label="No" value="No" />
@@ -232,7 +252,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
-        padding: 5
+        marginTop: 20,
+        paddingLeft: 10,
+        paddingRight: 10
     },
     inputStyle: {
         height: 35,
@@ -284,14 +306,11 @@ const styles = StyleSheet.create({
         color: 'green'
     },
     picker: {
-        width: '95%',
+        width: '100%',
         height: 30,
-        borderColor: 'lightgrey',
         borderWidth: 1,
-        marginBottom: 8,
-        margin: 5,
         padding: 10,
-        backgroundColor: 'lightgrey',
+        margin: 5
     },
     pickerItem: {
         color: 'red'
