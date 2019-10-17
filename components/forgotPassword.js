@@ -22,6 +22,7 @@ export default class ForgotPasswordScreen extends React.Component {
                         'Email Submitted',
                         'Recovery link will be sent to your email.'
                     )
+                    this.props.navigation.navigate('LoginScreen');
                     console.log('Success');
                 },
                 err => {
@@ -45,7 +46,7 @@ export default class ForgotPasswordScreen extends React.Component {
                                     onChangeText={(email) => this.setState({ email, isValid:true })} />
                             </Item>
 
-                            <Button disabled={!this.state.isValid}  full rounded success style={{ marginTop: 20 }} onPress={() => {
+                            <Button full rounded success style={{ marginTop: 20 }}  disabled={!this.state.isValid}   onPress={() => {
                                 this._submitEmail();
                             }}>
                                 <Text>Submit</Text>
