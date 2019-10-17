@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { Container, Form, Input, Button, Label, Icon, Picker, Content } from "native-base";
 const Item = Picker.Item;
@@ -39,7 +39,7 @@ export default class CommissionInfoScreen extends React.Component {
             modem_number: '',
             sim_card_no: '',
             meter_physical_location: 'No',
-            CommissionData: {},
+            // CommissionData: {},
             meter_report: 'No',
             selectedItem: undefined,
 
@@ -99,21 +99,26 @@ export default class CommissionInfoScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            CommissionData: this.comData
-        })
+        // this.setState({
+        //     CommissionData: this.comData
+        // })
     }
 
     async _commissionNext() {
         let dataObject = this.state;
         this.props.navigation.navigate('MeterAcuracyScreen',
             { CommissionInfodata: dataObject });
+
+        AsyncStorage.setItem('Commissioning', JSON.stringify(dataObject),async () => {
+            AsyncStorage.mergeItem('Commissioning', await AsyncStorage.getItem('CommissioningData'), () => {
+                AsyncStorage.getItem('Commissioning', (err, result) => {
+                   // console.log(result);
+                });
+            });
+        });
     }
 
     render() {
-        const { navigation } = this.props;
-        this.comData = navigation.state.params.CommissionData;
-        console.log('State: ', this.state);
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <Container>
@@ -129,7 +134,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     style={styles.inputStyle}
                                     onChangeText={(meter_type) => this.setState({ meter_type })} />
 
-                                <Label>Moden Number</Label>
+                                <Label>Modem Number</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(modem_number) => this.setState({ modem_number })} />

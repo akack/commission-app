@@ -41,14 +41,15 @@ export default class LoginScreen extends React.Component {
             <KeyboardAvoidingView behavior="padding" enabled>
                 <ScrollView>
                     <Container style={styles.container}>
+                        <Label style={{ justifyContent: 'center', textAlign:'center' }}>Filed marked with * are required.</Label>
                         <Form>
                             <Item floatingLabel>
-                                <Label>Email</Label>
+                                <Label>Email *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(email) => this.setState({ email })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Password</Label>
+                                <Label>Password *</Label>
                                 <Input
                                     secureTextEntry={true}
                                     autoCapitalize="none"

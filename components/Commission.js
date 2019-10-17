@@ -47,6 +47,7 @@ export default class CommissionScreen extends React.Component {
         let dataObject = this.state;
         this.props.navigation.navigate('CommissionInfoScreen',
             { CommissionData: dataObject });
+        AsyncStorage.setItem('CommissioningData', JSON.stringify(dataObject));
     }
 
     render() {
@@ -74,7 +75,7 @@ export default class CommissionScreen extends React.Component {
                                 />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Technician Name *</Label>
+                                <Label>Technician Full Name *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(technician_name) => this.setState({ technician_name })} />
                             </Item>

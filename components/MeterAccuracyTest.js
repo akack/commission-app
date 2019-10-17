@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, AsyncStorage } from 'react-native';
 import { Container, Form, Input, Button, Label, Icon, Picker, Content } from "native-base";
 import { KeyboardAvoidingView, ScrollView } from 'react-native';
 const Item = Picker.Item;
@@ -35,7 +35,7 @@ export default class MeterAccuracyTest extends React.Component {
             speed_test_result: 'No',
             ct: 'No',
             netelek_system_op: 'No',
-            commissionInfoData: {},
+            // commissionInfoData: {},
             reading_optical_eye: '',
             reading_software: ''
         }
@@ -78,21 +78,26 @@ export default class MeterAccuracyTest extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            commissionInfoData: this.comInfoData
-        });
+        // this.setState({
+        //     commissionInfoData: this.comInfoData
+        // });
     }
 
     async next() {
         let dataObject = this.state;
         this.props.navigation.navigate('CommentScreen',
             { MeterAccuracy: dataObject });
+
+        AsyncStorage.setItem('MeterAccurey', JSON.stringify(dataObject), async () => {
+            AsyncStorage.mergeItem('MeterAccurey', await AsyncStorage.getItem('Commissioning'), () => {
+                AsyncStorage.getItem('MeterAccurey', (err, result) => {
+                   // console.log('data: ',result);
+                });
+            });
+        });
     }
 
     render() {
-        const { navigation } = this.props;
-        this.comInfoData = navigation.state.params.CommissionInfodata;
-        console.log('ComInfo State: ', this.state);
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <Container >

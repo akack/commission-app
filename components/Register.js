@@ -102,7 +102,7 @@ export default class RegisterScreen extends React.Component {
                                     secureTextEntry={true}
                                     autoCapitalize="none"
                                     autoCorrect={false}
-                                    onChangeText={(confirm) => this.setState({ confitm })}
+                                    onChangeText={(confirm) => this.setState({ confirm })}
                                 />
                             </Item>
                             <Button full rounded success style={{ marginTop: 10 }} onPress={() => {

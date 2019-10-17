@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, View } from 'react-native';
+import { Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, View, AsyncStorage, Image } from 'react-native';
 import { Container, Form, Input, Button, Label, Icon, Picker, Content, Textarea } from "native-base";
-
+import { AppService } from '../app.service';
 export default class CommentScreen extends React.Component {
     comInfoData = {};
 
+    appService = new AppService;
     static navigationOptions = ({ navigation }) => {
         return {
             headerRight: (
@@ -30,23 +31,54 @@ export default class CommentScreen extends React.Component {
             comment: '',
             signature: '',
             name: '',
-            allData: {}
+            isSub: false
         }
     }
 
-    componentDidMount() {
-        this.setState({
-            allData: this.comInfoData
-        });
-    }
 
     _submit() {
-        console.log(this.state);
+        let dataObject = this.state;
+        AsyncStorage.setItem('CommissioningSheetData', JSON.stringify(dataObject), async () => {
+            AsyncStorage.mergeItem('CommissioningSheetData', await AsyncStorage.getItem('MeterAccurey'), () => {
+                AsyncStorage.getItem('CommissioningSheetData', (err, result) => {
+                    //console.log('CommissioningSheetData: ',result);
+                    this.appService.StoreCommissionDataToDB(result)
+                        .then(
+                            res => {
+                                if (res === 'true') {
+                                    console.log('Submitted Data Successfully.');
+                                    Alert.alert(
+                                        'Success',
+                                        'Successfully submitted your form. Thank you.',
+                                        [
+                                            { text: 'OK', onPress: () => this.props.navigation.navigate('CommissionScreen') },
+                                        ],
+                                        { cancelable: false }
+                                    );
+
+                                    let keys = ['CommissioningData', 'Commissioning','CommissioningSheetData'];
+                                    AsyncStorage.multiRemove(keys, (err) => {
+                                       console,log('Success');
+                                    });
+                                }
+                            },
+                            err => {
+                                console.error(err);
+                                Alert.alert(
+                                    'Error',
+                                    'Error submitting form, please try again later.',
+                                    [
+                                        { text: 'OK', onPress: () => this.props.navigation.navigate('CommissionScreen') },
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }
+                        )
+                });
+            });
+        });
     }
     render() {
-        const { navigation } = this.props;
-        this.comInfoData = navigation.state.params.MeterAccuracy;
-        console.log('All Data: ', this.state);
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <Container>

@@ -43,7 +43,7 @@ const AppNavigator = createStackNavigator(
     },
     CommissionScreen: {
       screen: Commission, navigationOptions: {
-        title: 'Commission Form',
+        title: 'Onsite Technician Details',
 
       }
     },
