@@ -60,7 +60,7 @@ const AppNavigator = createStackNavigator(
     },
     CommentScreen: {
       screen: Comment, navigationOptions: {
-        title: 'Submit',
+        title: 'Submit Commissioning Sheet',
       }
     },
     ForgotPasswordScreen: {
