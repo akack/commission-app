@@ -44,7 +44,7 @@ export default class CommentScreen extends React.Component {
                     //console.log('CommissioningSheetData: ',result);
                     this.appService.StoreCommissionDataToDB(result)
                         .then(
-                            res => {
+                            async res => {
                                 if (res === 'true') {
                                     console.log('Submitted Data Successfully.');
                                     Alert.alert(
@@ -57,7 +57,7 @@ export default class CommentScreen extends React.Component {
                                     );
 
                                     let keys = ['CommissioningData', 'Commissioning','CommissioningSheetData'];
-                                    AsyncStorage.multiRemove(keys, (err) => {
+                                    await AsyncStorage.multiRemove(keys, (err) => {
                                        console,log('Success');
                                     });
                                 }
