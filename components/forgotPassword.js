@@ -14,15 +14,19 @@ export default class ForgotPasswordScreen extends React.Component {
     }
 
     async _submitEmail() {
-        this.appService.singInFireBase(this.state.email, this.state.password)
+        this.appService.passwordRecovery(this.state.email)
             .then(
                 async (res) => {
-
+                    Alert.alert(
+                        'Email Submitted',
+                        'Recovery link will be sent to your email.'
+                    )
+                    console.log('Success');
                 },
                 err => {
                     Alert.alert(
-                        'Login Error',
-                        'Invalid email / password.'
+                        'Email Error',
+                        'Seems your email is incorrect or not registered with us, Please check your email and try again.'
                     )
                 }
             )

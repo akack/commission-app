@@ -72,4 +72,8 @@ export class AppService {
         await AsyncStorage.removeItem('user');
         return firebase.auth().signOut();
     }
+
+    passwordRecovery(email) {
+        return firebaseCo.auth().sendPasswordResetEmail(email);
+    }
 }
