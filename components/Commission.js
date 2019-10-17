@@ -57,7 +57,7 @@ export default class CommissionScreen extends React.Component {
                     <Container >
                         <Form>
                             <Item>
-                                <Label>Commissioning Date</Label>
+                                <Label>Commissioning Date *</Label>
                                 <DatePicker
                                     defaultDate={new Date(2018, 4, 4)}
                                     minimumDate={new Date(2018, 1, 1)}

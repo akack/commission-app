@@ -94,7 +94,7 @@ export default class CommentScreen extends React.Component {
                                         })
                                     } />
 
-                                <Label>Name and Surname</Label>
+                                <Label>Name and Surname *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
                                     onChangeText={(name) => this.setState({ name })} />
 

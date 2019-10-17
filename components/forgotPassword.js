@@ -4,29 +4,20 @@ import { AppService } from '../app.service';
 
 import { Container, Item, Form, Input, Button, Label } from "native-base";
 
-export default class LoginScreen extends React.Component {
+export default class ForgotPasswordScreen extends React.Component {
     appService = new AppService;
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
-            isloading: false,
-            emailPlaceholder: 'Email...',
-            passswordPlaceholder: 'Password...'
+            email: ''
         }
     }
 
-    async _login() {
+    async _submitEmail() {
         this.appService.singInFireBase(this.state.email, this.state.password)
             .then(
                 async (res) => {
-                    this.appService.getUserDetails(res.user.uid);
-                    this.setState({
-                        email: '',
-                        password: ''
-                    });
-                    this.props.navigation.navigate('CommissionScreen');
+
                 },
                 err => {
                     Alert.alert(
@@ -48,31 +39,18 @@ export default class LoginScreen extends React.Component {
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(email) => this.setState({ email })} />
                             </Item>
-                            <Item floatingLabel>
-                                <Label>Password *</Label>
-                                <Input
-                                    secureTextEntry={true}
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    onChangeText={(password) => this.setState({ password })}
-                                />
-                            </Item>
+
                             <Button full rounded success style={{ marginTop: 20 }} onPress={() => {
-                                this._login();
+                                this._submitEmail();
                             }}>
-                                <Text>SignIn</Text>
+                                <Text>Submit</Text>
                             </Button>
 
                             <Button full rounded info style={{ marginTop: 20 }} onPress={() => {
-                                this.props.navigation.navigate('RegisterScreen');
+                                this.props.navigation.navigate('LoginScreen');
                             }}>
-                                <Text>Signup</Text>
+                                <Text>Signin</Text>
                             </Button>
-                            <View style={styles.forgotPassword} >
-                                <Text onPress={() => {
-                                    this.props.navigation.navigate('ForgotPasswordScreen');
-                                }}>Forgot Password?</Text>
-                            </View>
                         </Form>
                     </Container>
                 </ScrollView>

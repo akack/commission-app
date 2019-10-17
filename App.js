@@ -8,6 +8,7 @@ import Commission from './components/Commission';
 import CommissionInfo from './components/CommissionInfo';
 import MeterAccuracy from './components/MeterAccuracyTest';
 import Comment from './components/Comment';
+import ForgotPassword from './components/forgotPassword';
 import * as firebase from "firebase";
 import Logout from './components/Logout';
 
@@ -59,7 +60,12 @@ const AppNavigator = createStackNavigator(
     },
     CommentScreen: {
       screen: Comment, navigationOptions: {
-        title: 'Submition',
+        title: 'Submit',
+      }
+    },
+    ForgotPasswordScreen: {
+      screen: ForgotPassword, navigationOptions: {
+        title: 'Forgot Password',
       }
     },
   },
