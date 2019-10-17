@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
-import DatePicker from 'react-native-datepicker';
+// import DatePicker from 'react-native-datepicker';
 import { AppService } from '../app.service';
-import { Container, Item, Form, Input, Button, Label, Icon } from "native-base";
+import { Container, Item, Form, Input, Button, Label, Icon, DatePicker } from "native-base";
 import { KeyboardAvoidingView, ScrollView } from 'react-native';
 
 export default class CommissionScreen extends React.Component {
@@ -38,7 +38,8 @@ export default class CommissionScreen extends React.Component {
             site_address: '',
             site_description: '',
             site_type: '',
-            view_number: ''
+            view_number: '',
+            isFormValid: false
         }
     }
 
@@ -55,6 +56,7 @@ export default class CommissionScreen extends React.Component {
                     <Container >
                         <Form>
                             <Item>
+                                <Label>Commissioning Date</Label>
                                 <DatePicker
                                     defaultDate={new Date(2018, 4, 4)}
                                     minimumDate={new Date(2018, 1, 1)}
@@ -72,36 +74,36 @@ export default class CommissionScreen extends React.Component {
                                 />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Technician Name</Label>
+                                <Label>Technician Name *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(technician_name) => this.setState({ technician_name })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Site Contact Name</Label>
+                                <Label>Site Contact Name *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(site_contact_name) => this.setState({ site_contact_name })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Site Address</Label>
+                                <Label>Site Address *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(site_address) => this.setState({ site_address })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Site Description</Label>
+                                <Label>Site Description *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(site_description) => this.setState({ site_description })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Site Type</Label>
+                                <Label>Site Type *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(site_type) => this.setState({ site_type })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>View Number</Label>
+                                <Label>View Number *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(view_number) => this.setState({ view_number })} />
+                                    onChangeText={(view_number) => this.setState({ view_number, isFormValid: true })} />
                             </Item>
-                            <Button full rounded success style={{ marginTop: 10}} onPress={() => {
+                            <Button full rounded success style={{ marginTop: 10 }} disabled={!this.state.isFormValid} onPress={() => {
                                 this._commissionNext();
                             }}><Text>Next</Text></Button>
                         </Form>
