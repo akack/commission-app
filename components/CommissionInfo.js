@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import { Container, Item, Form, Input, Button, Label, Icon, Picker } from "native-base";
-
+import { Container, Form, Input, Button, Label, Icon, Picker, Content } from "native-base";
+const Item = Picker.Item;
 export default class CommissionInfoScreen extends React.Component {
     comData = {};
 
@@ -31,17 +31,39 @@ export default class CommissionInfoScreen extends React.Component {
         super(props);
         this.state = {
             meter_number: '',
-            Antenna: '',
-            CT_Visible: '',
+            Antenna: 'No',
+            CT_Visible: 'No',
             CT_Ratio: '',
-            APN_correct: '',
+            APN_correct: 'No',
             meter_type: '',
             modem_number: '',
             sim_card_no: '',
-            meter_physical_location: '',
-            CommissionData: {}
+            meter_physical_location: 'No',
+            CommissionData: {},
+            meter_report: 'No',
+            selectedItem: undefined
         }
+    }
 
+    onAntennaChange(value) {
+        this.setState({
+            Antenna: value
+        });
+    }
+    onCTVisibleChange(value) {
+        this.setState({
+            CT_Visible: value
+        });
+    }
+    onAPNCorrectChange(value) {
+        this.setState({
+            APN_correct: value
+        })
+    }
+    onMeterReportChange(value) {
+        this.setState({
+            meter_report: value
+        })
     }
 
     componentDidMount() {
@@ -55,101 +77,94 @@ export default class CommissionInfoScreen extends React.Component {
         this.props.navigation.navigate('MeterAcuracyScreen',
             { CommissionInfodata: dataObject });
     }
+
     render() {
         const { navigation } = this.props;
         this.comData = navigation.state.params.CommissionData;
         console.log('State: ', this.state);
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-                <ScrollView>
-                    <Container >
-                        <Form>
-                            <Item floatingLabel>
+                <Container>
+                    <ScrollView >
+                        <Content style={{marginBottom:15}}>
+                            <Form>
                                 <Label>Meter Number</Label>
-                                <Input autoCapitalize="none" autoCorrect={false}
+                                <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
                                     onChangeText={(meter_number) => this.setState({ meter_number })} />
-                            </Item>
-                            <Item floatingLabel>
+
                                 <Label>Meter Type </Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
                                     onChangeText={(meter_type) => this.setState({ meter_type })} />
-                            </Item>
-                            <Item floatingLabel>
+
                                 <Label>Moden Number</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
                                     onChangeText={(modem_number) => this.setState({ modem_number })} />
-                            </Item>
-                            <Item floatingLabel>
+
                                 <Label>Sim Card Number</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
                                     onChangeText={(sim_card_no) => this.setState({ sim_card_no })} />
-                            </Item>
-                            <Item floatingLabel>
+
                                 <Label>Meter Physical Location</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
                                     onChangeText={(meter_physical_location) => this.setState({ meter_physical_location })} />
-                            </Item>
-                            <Item floatingLabel style={{ marginBottom: 10 }}>
+
                                 <Label>CT Ratio</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
                                     onChangeText={(CT_Ratio) => this.setState({ CT_Ratio })} />
-                            </Item>
-                            <View style={{ padding: 10 }}>
-                                <Item picker>
-                                    <Label>Antenna</Label>
-                                    <Picker
-                                        style={styles.picker} itemStyle={styles.pickerItem}
-                                        selectedValue={this.state.Antenna}
-                                        placeholder="Select Antenna"
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ Antenna: itemValue })}>
-                                        <Picker.Item label="Select" value="" />
-                                        <Picker.Item label="Yes" value="Yes" />
-                                        <Picker.Item label="No" value="No" />
-                                    </Picker>
-                                </Item>
 
-                                <Item picker>
-                                    <Label>CT Visible</Label>
-                                    <Picker
-                                        style={styles.picker} itemStyle={styles.pickerItem}
-                                        selectedValue={this.state.CT_Visible}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ CT_Visible: itemValue })}>
-                                        <Picker.Item label="Select" value="" />
-                                        <Picker.Item label="Yes" value="Yes" />
-                                        <Picker.Item label="No" value="No" />
-                                    </Picker>
-                                </Item>
+                                <Label>Antenna</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.Antenna}
+                                    onValueChange={this.onAntennaChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
 
-                                <Item picker>
-                                    <Label>APN Correct</Label>
-                                    <Picker
-                                        selectedValue={this.state.APN_correct}
-                                        style={styles.picker} itemStyle={styles.pickerItem}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ APN_correct: itemValue })}>
-                                        <Picker.Item label="Select" value="" />
-                                        <Picker.Item label="Yes" value="Yes" />
-                                        <Picker.Item label="No" value="No" />
-                                    </Picker>
-                                </Item>
+                                <Label>CT Visible</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.CT_Visible}
+                                    onValueChange={this.onCTVisibleChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
 
-                                <Item picker>
-                                    <Label>Meter Report</Label>
-                                    <Picker
-                                        selectedValue={this.state.meter_report}
-                                        style={styles.picker} itemStyle={styles.pickerItem}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ meter_report: itemValue })}>
-                                        <Picker.Item label="Select" value="" />
-                                        <Picker.Item label="Yes" value="Yes" />
-                                        <Picker.Item label="No" value="No" />
-                                    </Picker>
-                                </Item>
-                                <Button full rounded style={{ marginTop: 10, backgroundColor: 'green' }} onPress={() => {
-                                this._commissionNext();
-                            }}><Text style={styles.btnText}>Next</Text></Button>
-                            </View> 
-                        </Form>
-                    </Container>
-                </ScrollView>
+                                <Label>APN Correct</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.APN_correct}
+                                    onValueChange={this.onAPNCorrectChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+                                <Label>Meter Report</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.meter_report}
+                                    onValueChange={this.onMeterReportChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <View style={{ marginTop: 10 }} >
+                                    <Button full rounded style={{ backgroundColor: 'green' }} onPress={() => {
+                                        this._commissionNext();
+                                    }}><Text style={styles.btnText}>Next</Text></Button>
+                                </View>
+                            </Form>
+                        </Content>
+                    </ScrollView>
+                </Container>
             </KeyboardAvoidingView>
         )
     }
@@ -170,9 +185,9 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         height: 35,
-        borderColor: 'green',
-        borderWidth: 1,
-        borderRadius: 0,
+        borderBottomColor:'green',
+        borderBottomWidth: 1,
+        borderRadius: 3,
         margin: 10,
         paddingLeft: 10
     },

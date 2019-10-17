@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
         color: 'green'
     },
     picker: {
-        width: '100%',
+
         height: 30,
         borderWidth: 1,
         padding: 10,
