@@ -9,7 +9,8 @@ export default class ForgotPasswordScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: ''
+            email: '',
+            isValid: false
         }
     }
 
@@ -41,7 +42,7 @@ export default class ForgotPasswordScreen extends React.Component {
                             <Item floatingLabel>
                                 <Label>Email *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(email) => this.setState({ email })} />
+                                    onChangeText={(email) => this.setState({ email, isValid:true })} />
                             </Item>
 
                             <Button full rounded success style={{ marginTop: 20 }} onPress={() => {
@@ -50,7 +51,7 @@ export default class ForgotPasswordScreen extends React.Component {
                                 <Text>Submit</Text>
                             </Button>
 
-                            <Button full rounded info style={{ marginTop: 20 }} onPress={() => {
+                            <Button disabled={!this.state.isValid} full rounded info style={{ marginTop: 20 }} onPress={() => {
                                 this.props.navigation.navigate('LoginScreen');
                             }}>
                                 <Text>Signin</Text>
