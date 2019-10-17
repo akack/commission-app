@@ -20,7 +20,7 @@ export default class LoginScreen extends React.Component {
     async _login() {
         this.appService.singInFireBase(this.state.email, this.state.password)
             .then(
-                async (res) => {
+                (res) => {
                     this.appService.getUserDetails(res.user.uid);
                     this.setState({
                         email: '',
@@ -72,7 +72,7 @@ export default class LoginScreen extends React.Component {
                                 <TouchableOpacity onPress={() => {
                                     this.props.navigation.navigate('ForgotPasswordScreen');
                                 }}>
-                                    <Text >Forgot Password?</Text>
+                                    <Text>Forgot Password?</Text>
                                 </TouchableOpacity>
                             </View>
                         </Form>
