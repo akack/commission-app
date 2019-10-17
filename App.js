@@ -44,13 +44,13 @@ const AppNavigator = createStackNavigator(
     },
     CommissionScreen: {
       screen: Commission, navigationOptions: {
-        title: 'Onsite Technician Details',
+        title: 'Technician Details',
 
       }
     },
     CommissionInfoScreen: {
       screen: CommissionInfo, navigationOptions: {
-        title: 'Commission Information',
+        title: 'Commissioning Info',
       }
     },
     MeterAcuracyScreen: {
@@ -65,7 +65,7 @@ const AppNavigator = createStackNavigator(
     },
     ForgotPasswordScreen: {
       screen: ForgotPassword, navigationOptions: {
-        title: 'Forgot Password',
+        title: 'Password Recovery',
       }
     },
   },
