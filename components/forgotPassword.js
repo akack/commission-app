@@ -45,13 +45,13 @@ export default class ForgotPasswordScreen extends React.Component {
                                     onChangeText={(email) => this.setState({ email, isValid:true })} />
                             </Item>
 
-                            <Button full rounded success style={{ marginTop: 20 }} onPress={() => {
+                            <Button disabled={!this.state.isValid}  full rounded success style={{ marginTop: 20 }} onPress={() => {
                                 this._submitEmail();
                             }}>
                                 <Text>Submit</Text>
                             </Button>
 
-                            <Button disabled={!this.state.isValid} full rounded info style={{ marginTop: 20 }} onPress={() => {
+                            <Button full rounded info style={{ marginTop: 20 }} onPress={() => {
                                 this.props.navigation.navigate('LoginScreen');
                             }}>
                                 <Text>Signin</Text>
