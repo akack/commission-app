@@ -170,9 +170,9 @@ export default class MeterAccuracyTest extends React.Component {
 
 
                                 <View style={{ marginTop: 10 }} >
-                                    <Button full rounded style={{ backgroundColor: 'green' }} onPress={() => {
+                                    <Button full rounded success onPress={() => {
                                         this.next();
-                                    }}><Text style={styles.btnText}>Next</Text></Button>
+                                    }}><Text>Next</Text></Button>
                                 </View>
                             </Form>
                         </Content>

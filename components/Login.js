@@ -56,13 +56,13 @@ export default class LoginScreen extends React.Component {
                                     onChangeText={(password) => this.setState({ password })}
                                 />
                             </Item>
-                            <Button full rounded style={{ marginTop: 20 }} onPress={() => {
+                            <Button full rounded success style={{ marginTop: 20 }} onPress={() => {
                                 this._login();
                             }}>
                                 <Text>SignIn</Text>
                             </Button>
 
-                            <Button full rounded success style={{ marginTop: 20 }} onPress={() => {
+                            <Button full rounded info style={{ marginTop: 20 }} onPress={() => {
                                 this.props.navigation.navigate('RegisterScreen');
                             }}>
                                 <Text>Signup</Text>

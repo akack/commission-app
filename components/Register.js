@@ -105,13 +105,13 @@ export default class RegisterScreen extends React.Component {
                                     onChangeText={(confirm) => this.setState({ confitm })}
                                 />
                             </Item>
-                            <Button full rounded style={{ marginTop: 10 }} onPress={() => {
+                            <Button full rounded success style={{ marginTop: 10 }} onPress={() => {
                                 this._registerUser();
                             }}>
                                 <Text>Signup</Text>
                             </Button>
 
-                            <Button full rounded style={{ marginTop: 10, backgroundColor: 'green' }} onPress={() => {
+                            <Button full rounded info style={{ marginTop: 10 }} onPress={() => {
                                 this.props.navigation.navigate('LoginScreen')
                             }}>
                                 <Text>Signin</Text>

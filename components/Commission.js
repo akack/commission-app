@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { AppService } from '../app.service';
-import { Container, Item, Form, Input, Button, Label } from "native-base";
+import { Container, Item, Form, Input, Button, Label, Icon } from "native-base";
 import { KeyboardAvoidingView, ScrollView } from 'react-native';
 
 export default class CommissionScreen extends React.Component {
@@ -101,9 +101,9 @@ export default class CommissionScreen extends React.Component {
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(view_number) => this.setState({ view_number })} />
                             </Item>
-                            <Button full rounded style={{ marginTop: 10, backgroundColor: 'green' }} onPress={() => {
+                            <Button full rounded success style={{ marginTop: 10}} onPress={() => {
                                 this._commissionNext();
-                            }}><Text style={styles.btnText}>Next</Text></Button>
+                            }}><Text>Next</Text></Button>
                         </Form>
                     </Container>
                 </ScrollView>

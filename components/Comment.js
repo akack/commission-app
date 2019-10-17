@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, View } from 'react-native';
 import { Container, Form, Input, Button, Label, Icon, Picker, Content, Textarea } from "native-base";
 
 export default class CommentScreen extends React.Component {
@@ -67,7 +67,9 @@ export default class CommentScreen extends React.Component {
                                     onChangeText={(name) => this.setState({ name })} />
 
                                 <Label>Sign here</Label>
+                                <View style={{ margin: 8 }}>
 
+                                </View>
                                 <Button full rounded success onPress={() => {
                                     this._submit();
                                 }}>

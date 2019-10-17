@@ -234,9 +234,9 @@ export default class CommissionInfoScreen extends React.Component {
                                 </Picker>
 
                                 <View style={{ marginTop: 10 }} >
-                                    <Button full rounded style={{ backgroundColor: 'green' }} onPress={() => {
+                                    <Button full rounded success onPress={() => {
                                         this._commissionNext();
-                                    }}><Text style={styles.btnText}>Next</Text></Button>
+                                    }}><Text>Next</Text></Button>
                                 </View>
                             </Form>
                         </Content>
