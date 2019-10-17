@@ -74,6 +74,6 @@ export class AppService {
     }
 
     passwordRecovery(email) {
-        return firebaseCo.auth().sendPasswordResetEmail(email);
+        return firebase.auth().sendPasswordResetEmail(email);
     }
 }
