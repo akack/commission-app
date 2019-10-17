@@ -41,8 +41,40 @@ export default class CommissionInfoScreen extends React.Component {
             meter_physical_location: 'No',
             CommissionData: {},
             meter_report: 'No',
-            selectedItem: undefined
+            selectedItem: undefined,
+
+            speed_test_done: 'No',
+            ping: 'No',
+            speed_vodacom: '',
+            speed_mtn: '',
+            port_number: '',
+            meter_commissioning_report: 'No',
+            down_load_his_data: 'No',
         }
+    }
+
+    onMeterComReport(value) {
+        this.setState({
+            meter_commissioning_report: value
+        })
+    }
+
+    onDownlodaDataChange(value) {
+        this.setState({
+            down_load_his_data: value
+        })
+    }
+
+    onPingChange(value) {
+        this.setState({
+            ping: value
+        })
+    }
+
+    onSpeedTestDone(value) {
+        this.setState({
+            speed_test_done: value
+        })
     }
 
     onAntennaChange(value) {
@@ -86,7 +118,7 @@ export default class CommissionInfoScreen extends React.Component {
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <Container>
                     <ScrollView >
-                        <Content style={{marginBottom:15}}>
+                        <Content style={{ marginBottom: 15 }}>
                             <Form>
                                 <Label>Meter Number</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
@@ -117,6 +149,21 @@ export default class CommissionInfoScreen extends React.Component {
                                     style={styles.inputStyle}
                                     onChangeText={(CT_Ratio) => this.setState({ CT_Ratio })} />
 
+                                <Label>Speed Vodacom</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
+                                    onChangeText={(speed_vodacom) => this.setState({ speed_vodacom })} />
+
+                                <Label>Speed Recorded MTN</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
+                                    onChangeText={(speed_mtn) => this.setState({ speed_mtn })} />
+
+                                <Label>Port Number</Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
+                                    onChangeText={(port_number) => this.setState({ port_number })} />
+
                                 <Label>Antenna</Label>
                                 <Picker
                                     iosHeader="Select one"
@@ -146,12 +193,42 @@ export default class CommissionInfoScreen extends React.Component {
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
-                                <Label>Meter Report</Label>
+                                <Label>Meter Commissioning Report</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
-                                    selectedValue={this.state.meter_report}
-                                    onValueChange={this.onMeterReportChange.bind(this)}>
+                                    selectedValue={this.state.meter_commissioning_report}
+                                    onValueChange={this.onMeterComReport.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <Label>Speed Test Done</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.speed_test_done}
+                                    onValueChange={this.onSpeedTestDone.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <Label>Communicating/Ping</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.ping}
+                                    onValueChange={this.onPingChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <Label>Down Load History Data</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.down_load_his_data}
+                                    onValueChange={this.onDownlodaDataChange.bind(this)}>
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -185,7 +262,7 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         height: 35,
-        borderBottomColor:'green',
+        borderBottomColor: 'green',
         borderBottomWidth: 1,
         borderRadius: 3,
         margin: 10,

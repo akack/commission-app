@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-
-
+import { Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Container, Form, Input, Button, Label, Icon, Picker, Content, Textarea } from "native-base";
 
 export default class CommentScreen extends React.Component {
     comInfoData = {};
@@ -30,6 +29,7 @@ export default class CommentScreen extends React.Component {
         this.state = {
             comment: '',
             signature: '',
+            name: '',
             allData: {}
         }
     }
@@ -48,34 +48,38 @@ export default class CommentScreen extends React.Component {
         this.comInfoData = navigation.state.params.MeterAccuracy;
         console.log('All Data: ', this.state);
         return (
-            <View style={styles.container}>
-                <View >
-                    <Text style={styles.title}> Comment</Text>
-                    <TextInput style={styles.inputStyle}
-                        multiline={true} numberOfLines={10}
-                        onChangeText={(comment) => this.setState({ comment })}
-                        placeholder='Comment here'
-                        underlineColorAndroid='transparent' />
-                </View>
+            <KeyboardAvoidingView style={styles.container}>
+                <Container>
+                    <ScrollView>
+                        <Content>
+                            <Form>
+                                <Label>Comment</Label>
+                                <Textarea
+                                    style={{ marginBottom: 8 }}
+                                    rowSpan={5} bordered placeholder="Comment here..." onChangeText={
+                                        (comment) => this.setState({
+                                            comment
+                                        })
+                                    } />
 
-                <View >
-                    <Text style={styles.title}> Manager Signature</Text>
+                                <Label>Name and Surname</Label>
+                                <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
+                                    onChangeText={(name) => this.setState({ name })} />
 
-                </View>
-                <View style={styles.btnContainer}>
+                                <Label>Sign here</Label>
 
-                    <View style={styles.btnSubmit}>
-                        <TouchableOpacity onPress={() => {
-                            this._submit();
-                        }}
-                        >
-                            <Text style={styles.btnText}>Submit</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                                <Button full rounded success onPress={() => {
+                                    this._submit();
+                                }}>
+                                    <Text>Submit</Text>
+                                </Button>
+                            </Form>
 
 
-            </View >
+                        </Content>
+                    </ScrollView>
+                </Container>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -83,16 +87,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'stretch',
+        marginTop: 30,
+        paddingHorizontal: 15
     },
     inputStyle: {
-        height: 120,
-        borderColor: 'green',
-        borderWidth: 1,
-        borderRadius: 0,
-        margin: 10,
-        paddingLeft: 10
+        height: 35,
+        borderBottomColor: 'green',
+        borderBottomWidth: 1,
+        borderRadius: 3,
+        marginBottom: 10,
+        paddingHorizontal: 5
     },
     title: {
         marginLeft: 15,

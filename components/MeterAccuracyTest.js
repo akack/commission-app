@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Picker } from 'react-native';
-import { Container, Item, Form, Input, Button, Label, Icon } from "native-base";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { Container, Form, Input, Button, Label, Icon, Picker, Content } from "native-base";
 import { KeyboardAvoidingView, ScrollView } from 'react-native';
-
+const Item = Picker.Item;
 export default class MeterAccuracyTest extends React.Component {
     comInfoData = {};
 
@@ -20,7 +20,6 @@ export default class MeterAccuracyTest extends React.Component {
                             ],
                             { cancelable: false }
                         )
-
                     }}>
                     LOGOUT
                 </Text>
@@ -30,20 +29,52 @@ export default class MeterAccuracyTest extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            down_load_his_data: '',
-            meter_commissioning_report: '',
-            speed_test_done: '',
-            ping: '',
-            speed_vodacom: '',
-            speed_mtn: '',
-            meter: '',
-            modem: '',
-            netelek: '',
-            speed_test_result: '',
-            ct: '',
-            netelek_system_op: '',
-            commissionInfoData: {}
+            meter: 'No',
+            modem: 'No',
+            netelek: 'No',
+            speed_test_result: 'No',
+            ct: 'No',
+            netelek_system_op: 'No',
+            commissionInfoData: {},
+            reading_optical_eye: '',
+            reading_software: ''
         }
+    }
+
+    onNetelekSystemOpChange(value) {
+        this.setState({
+            netelek_system_op: value
+        })
+    }
+
+    onCTChange(value) {
+        this.setState({
+            ct: value
+        })
+    }
+
+    onSpeedTestResultChange(value) {
+        this.setState({
+            speed_test_result: value
+        })
+    }
+
+    onNetelekChange(value) {
+        this.setState({
+            netelek: value
+        })
+    }
+
+    onModemChange(value) {
+        this.setState({
+            modem: value
+        })
+    }
+
+    onMeterChange(value) {
+        this.setState({
+            meter: value
+        })
     }
 
     componentDidMount() {
@@ -51,198 +82,103 @@ export default class MeterAccuracyTest extends React.Component {
             commissionInfoData: this.comInfoData
         });
     }
+
     async next() {
         let dataObject = this.state;
         this.props.navigation.navigate('CommentScreen',
             { MeterAccuracy: dataObject });
     }
+
     render() {
         const { navigation } = this.props;
         this.comInfoData = navigation.state.params.CommissionInfodata;
         console.log('ComInfo State: ', this.state);
         return (
-
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-                <ScrollView>
-                    <Container >
-                        <Form>
-                            <View style={{ padding: 10 }}>
-                                <Label>Down Load History Data</Label>
-                                <Item picker>
+                <Container >
+                    <ScrollView>
+                        <Content style={{ marginBottom: 15 }}>
+                            <Form>
+                                <Label>Reading on Optical Eye</Label>
+                                <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
+                                    onChangeText={(reading_optical_eye) => this.setState({ reading_optical_eye })} />
 
-                                    <Picker
-                                        mode="dropdown"
-                                        iosIcon={<Icon name="arrow-down" />}
-                                        style={styles.picker} itemStyle={styles.pickerItem}
-                                        selectedValue={this.state.down_load_his_data}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ down_load_his_data: itemValue })}>
-                                        <Picker.Item label="Select" value="" />
-                                        <Picker.Item label="Yes" value="Yes" />
-                                        <Picker.Item label="No" value="No" />
-                                    </Picker>
-                                </Item>
+                                <Label>Reading On Software </Label>
+                                <Input autoCapitalize="none" autoCorrect={false}
+                                    style={styles.inputStyle}
+                                    onChangeText={(reading_software) => this.setState({ reading_software })} />
 
-                                <Label>Meter Commissioning Report</Label>
-                                <Item picker>
-                                    <Picker
-                                        mode="dropdown"
-                                        iosIcon={<Icon name="arrow-down" />}
-                                        style={styles.picker} itemStyle={styles.pickerItem}
-                                        selectedValue={this.state.meter_commissioning_report}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ meter_commissioning_report: itemValue })}>
-                                        <Picker.Item label="Select" value="" />
-                                        <Picker.Item label="Yes" value="Yes" />
-                                        <Picker.Item label="No" value="No" />
-                                    </Picker>
-                                </Item>
+                                <Label>Meter</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.meter}
+                                    onValueChange={this.onMeterChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
 
-                                <Label>Speed Test Done</Label>
-                                <Item picker>
-                                    <Picker
-                                        mode="dropdown"
-                                        iosIcon={<Icon name="arrow-down" />}
-                                        style={styles.picker} itemStyle={styles.pickerItem}
-                                        selectedValue={this.state.speed_test_done}
-                                        onValueChange={(itemValue, itemIndex) => this.setState({ speed_test_result: itemValue })}>
-                                        <Picker.Item label="Select" value="" />
-                                        <Picker.Item label="Yes" value="Yes" />
-                                        <Picker.Item label="No" value="No" />
-                                    </Picker>
-                                </Item>
-                            </View>
-                        </Form>
-                    </Container>
-                </ScrollView>
+                                <Label>Modem</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.modem}
+                                    onValueChange={this.onModemChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <Label>Netelek</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.netelek}
+                                    onValueChange={this.onNetelekChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <Label>Speed Test Result</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.speed_test_result}
+                                    onValueChange={this.onSpeedTestResultChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <Label>Current Transfomers</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.ct}
+                                    onValueChange={this.onCTChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+                                <Label>Netelek System Operational</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.netelek_system_op}
+                                    onValueChange={this.onNetelekSystemOpChange.bind(this)}>
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
+
+                                <View style={{ marginTop: 10 }} >
+                                    <Button full rounded style={{ backgroundColor: 'green' }} onPress={() => {
+                                        this.next();
+                                    }}><Text style={styles.btnText}>Next</Text></Button>
+                                </View>
+                            </Form>
+                        </Content>
+                    </ScrollView>
+                </Container>
             </KeyboardAvoidingView>
-            // <View style={styles.container}>
-            //     <View style={{ flexDirection: 'column', marginTop: 20 }} >
-            //         <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Down Load His Data</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.down_load_his_data}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ down_load_his_data: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Meter Commissioning Report</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.meter_commissioning_report}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ meter_commissioning_report: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Speed Test Done</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.speed_test_done}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ speed_test_done: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-            //         </View>
-
-
-            //         <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Communicating/Ping</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.ping}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ ping: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Meter</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.meter}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ meter: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Modem</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.modem}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ modem: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-            //         </View>
-
-
-            //         <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Speed Test Results</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.speed_test_result}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ speed_test_result: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Current Transformers</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.ct}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ ct: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-
-            //             <View style={styles.selectP}>
-            //                 <Text style={styles.title}> Netelek System Operations</Text>
-            //                 <Picker
-            //                     style={styles.picker} itemStyle={styles.pickerItem}
-            //                     selectedValue={this.state.netelek_system_op}
-            //                     onValueChange={(itemValue, itemIndex) => this.setState({ netelek_system_op: itemValue })}>
-            //                     <Picker.Item label="Select" value="" />
-            //                     <Picker.Item label="Yes" value="Yes" />
-            //                     <Picker.Item label="No" value="No" />
-            //                 </Picker>
-            //             </View>
-            //         </View>
-            //         <View style={styles.btnContainer}>
-            //             <View style={styles.btnSubmit}>
-            //                 <TouchableOpacity onPress={() => {
-            //                     this.next();
-            //                 }}>
-            //                     <Text style={styles.btnText}>Next</Text>
-            //                 </TouchableOpacity>
-            //             </View>
-            //         </View>
-            //     </View>
-
-            // </View >
         );
     }
 }
@@ -258,9 +194,9 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         height: 35,
-        borderColor: 'green',
-        borderWidth: 1,
-        borderRadius: 0,
+        borderBottomColor: 'green',
+        borderBottomWidth: 1,
+        borderRadius: 3,
         margin: 10,
         paddingLeft: 10
     },
