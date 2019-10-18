@@ -43,11 +43,24 @@ export default class CommissionScreen extends React.Component {
         }
     }
 
+    isNotEmpty() {
+        return !!this.state.commission_date && this.state.technician_name
+            && this.state.site_contact_name && this.state.site_address &&
+            this.state.site_description && this.state.site_type && this.state.view_number;
+    }
+
     async _commissionNext() {
-        let dataObject = this.state;
-        this.props.navigation.navigate('CommissionInfoScreen',
-            { CommissionData: dataObject });
-        AsyncStorage.setItem('CommissioningData', JSON.stringify(dataObject));
+        if (!this.isNotEmpty()) {
+            Alert.alert(
+                'Required Fileds',
+                'Field(s) marked with * are required.'
+            )
+        } else {
+            let dataObject = this.state;
+            this.props.navigation.navigate('CommissionInfoScreen',
+                { CommissionData: dataObject });
+            AsyncStorage.setItem('CommissioningData', JSON.stringify(dataObject));
+        }
     }
 
     render() {
@@ -104,7 +117,7 @@ export default class CommissionScreen extends React.Component {
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(view_number) => this.setState({ view_number, isFormValid: true })} />
                             </Item>
-                            <Button full rounded success style={{ marginTop: 10 }} disabled={!this.state.isFormValid} onPress={() => {
+                            <Button full rounded success style={{ marginTop: 10 }} onPress={() => {
                                 this._commissionNext();
                             }}><Text>Next</Text></Button>
                         </Form>

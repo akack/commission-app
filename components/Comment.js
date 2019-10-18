@@ -35,48 +35,58 @@ export default class CommentScreen extends React.Component {
         }
     }
 
+    isNotEmpty() {
+        return !!this.state.comment && this.state.name;
+    }
 
     _submit() {
-        let dataObject = this.state;
-        AsyncStorage.setItem('CommissioningSheetData', JSON.stringify(dataObject), async () => {
-            AsyncStorage.mergeItem('CommissioningSheetData', await AsyncStorage.getItem('MeterAccurey'), () => {
-                AsyncStorage.getItem('CommissioningSheetData', (err, result) => {
-                    //console.log('CommissioningSheetData: ',result);
-                    this.appService.StoreCommissionDataToDB(result)
-                        .then(
-                            async res => {
-                                if (res === 'true') {
-                                    console.log('Submitted Data Successfully.');
+        if (!this.isNotEmpty()) {
+            Alert.alert(
+                'Required Fileds',
+                'Field(s) marked with * are required.'
+            )
+        } else {
+            let dataObject = this.state;
+            AsyncStorage.setItem('CommissioningSheetData', JSON.stringify(dataObject), async () => {
+                AsyncStorage.mergeItem('CommissioningSheetData', await AsyncStorage.getItem('MeterAccurey'), () => {
+                    AsyncStorage.getItem('CommissioningSheetData', (err, result) => {
+                        //console.log('CommissioningSheetData: ',result);
+                        this.appService.StoreCommissionDataToDB(result)
+                            .then(
+                                async res => {
+                                    if (res === 'true') {
+                                        console.log('Submitted Data Successfully.');
+                                        Alert.alert(
+                                            'Success',
+                                            'Successfully submitted your form. Thank you.',
+                                            [
+                                                { text: 'OK', onPress: () => this.props.navigation.navigate('CommissionScreen') },
+                                            ],
+                                            { cancelable: false }
+                                        );
+
+                                        let keys = ['CommissioningData', 'Commissioning', 'CommissioningSheetData'];
+                                        await AsyncStorage.multiRemove(keys, (err) => {
+                                            console, log('Success');
+                                        });
+                                    }
+                                },
+                                err => {
+                                    console.error(err);
                                     Alert.alert(
-                                        'Success',
-                                        'Successfully submitted your form. Thank you.',
+                                        'Error',
+                                        'Error submitting form, please try again later.',
                                         [
                                             { text: 'OK', onPress: () => this.props.navigation.navigate('CommissionScreen') },
                                         ],
                                         { cancelable: false }
                                     );
-
-                                    let keys = ['CommissioningData', 'Commissioning','CommissioningSheetData'];
-                                    await AsyncStorage.multiRemove(keys, (err) => {
-                                       console,log('Success');
-                                    });
                                 }
-                            },
-                            err => {
-                                console.error(err);
-                                Alert.alert(
-                                    'Error',
-                                    'Error submitting form, please try again later.',
-                                    [
-                                        { text: 'OK', onPress: () => this.props.navigation.navigate('CommissionScreen') },
-                                    ],
-                                    { cancelable: false }
-                                );
-                            }
-                        )
+                            )
+                    });
                 });
             });
-        });
+        }
     }
     render() {
         return (
@@ -85,7 +95,7 @@ export default class CommentScreen extends React.Component {
                     <ScrollView>
                         <Content>
                             <Form>
-                                <Label>Comment</Label>
+                                <Label>Comment *</Label>
                                 <Textarea
                                     style={{ marginBottom: 8 }}
                                     rowSpan={5} bordered placeholder="Comment here..." onChangeText={

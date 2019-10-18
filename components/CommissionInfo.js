@@ -39,10 +39,7 @@ export default class CommissionInfoScreen extends React.Component {
             modem_number: '',
             sim_card_no: '',
             meter_physical_location: 'No',
-            // CommissionData: {},
             meter_report: 'No',
-            selectedItem: undefined,
-
             speed_test_done: 'No',
             ping: 'No',
             speed_vodacom: '',
@@ -53,6 +50,13 @@ export default class CommissionInfoScreen extends React.Component {
         }
     }
 
+    isNotEmpty() {
+        return !!this.state.meter_number && this.state.Antenna && this.state.CT_Visible && this.state.CT_Ratio
+            && this.state.APN_correct && this.state.meter_type && this.state.modem_number && this.state.sim_card_no
+            && this.state.meter_physical_location && this.state.meter_report && this.state.speed_test_done && this.state.ping
+            && this.state.speed_vodacom && this.state.speed_mtn && this.state.port_number && this.state.meter_commissioning_report
+            && this.state.down_load_his_data;
+    }
     onMeterComReport(value) {
         this.setState({
             meter_commissioning_report: value
@@ -98,24 +102,26 @@ export default class CommissionInfoScreen extends React.Component {
         })
     }
 
-    componentDidMount() {
-        // this.setState({
-        //     CommissionData: this.comData
-        // })
-    }
-
     async _commissionNext() {
-        let dataObject = this.state;
-        this.props.navigation.navigate('MeterAcuracyScreen',
-            { CommissionInfodata: dataObject });
+        if (!this.isNotEmpty()) {
+            Alert.alert(
+                'Required Fileds',
+                'Field(s) marked with * are required.'
+            )
+        } else {
+            let dataObject = this.state;
+            this.props.navigation.navigate('MeterAcuracyScreen',
+                { CommissionInfodata: dataObject });
 
-        AsyncStorage.setItem('Commissioning', JSON.stringify(dataObject),async () => {
-            AsyncStorage.mergeItem('Commissioning', await AsyncStorage.getItem('CommissioningData'), () => {
-                AsyncStorage.getItem('Commissioning', (err, result) => {
-                   // console.log(result);
+            AsyncStorage.setItem('Commissioning', JSON.stringify(dataObject), async () => {
+                AsyncStorage.mergeItem('Commissioning', await AsyncStorage.getItem('CommissioningData'), () => {
+                    AsyncStorage.getItem('Commissioning', (err, result) => {
+                        // console.log(result);
+                    });
                 });
             });
-        });
+        }
+
     }
 
     render() {
@@ -125,51 +131,51 @@ export default class CommissionInfoScreen extends React.Component {
                     <ScrollView >
                         <Content style={{ marginBottom: 15 }}>
                             <Form>
-                                <Label>Meter Number</Label>
+                                <Label>Meter Number *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
                                     onChangeText={(meter_number) => this.setState({ meter_number })} />
 
-                                <Label>Meter Type </Label>
+                                <Label>Meter Type *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(meter_type) => this.setState({ meter_type })} />
 
-                                <Label>Modem Number</Label>
+                                <Label>Modem Number *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(modem_number) => this.setState({ modem_number })} />
 
-                                <Label>Sim Card Number</Label>
+                                <Label>Sim Card Number *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(sim_card_no) => this.setState({ sim_card_no })} />
 
-                                <Label>Meter Physical Location</Label>
+                                <Label>Meter Physical Location *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(meter_physical_location) => this.setState({ meter_physical_location })} />
 
-                                <Label>CT Ratio</Label>
+                                <Label>CT Ratio *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(CT_Ratio) => this.setState({ CT_Ratio })} />
 
-                                <Label>Speed Vodacom</Label>
+                                <Label>Speed Vodacom *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(speed_vodacom) => this.setState({ speed_vodacom })} />
 
-                                <Label>Speed Recorded MTN</Label>
+                                <Label>Speed Recorded MTN *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(speed_mtn) => this.setState({ speed_mtn })} />
 
-                                <Label>Port Number</Label>
+                                <Label>Port Number *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(port_number) => this.setState({ port_number })} />
 
-                                <Label>Antenna</Label>
+                                <Label>Antenna *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -179,7 +185,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>CT Visible</Label>
+                                <Label>CT Visible *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -189,7 +195,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>APN Correct</Label>
+                                <Label>APN Correct *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -198,7 +204,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
-                                <Label>Meter Commissioning Report</Label>
+                                <Label>Meter Commissioning Report *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -208,7 +214,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Speed Test Done</Label>
+                                <Label>Speed Test Done *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -218,7 +224,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Communicating/Ping</Label>
+                                <Label>Communicating/Ping *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -228,7 +234,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Down Load History Data</Label>
+                                <Label>Down Load History Data *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"

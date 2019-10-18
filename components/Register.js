@@ -23,8 +23,13 @@ export default class RegisterScreen extends React.Component {
         }
     }
 
+    checkIfFieldIsEmpty() {
+        return !!this.state.name && this.state.surname && this.state.company && this.state.tel && this.state.email
+            && this.state.password && this.state.confirm;
+    }
+
     _registerUser() {
-        if (this.passwordMatch()) {
+        if (this.passwordMatch() && this.checkIfFieldIsEmpty()) {
             this.setState({
                 isPasswordMatch: true
             });
@@ -43,13 +48,23 @@ export default class RegisterScreen extends React.Component {
                                 'Email Error',
                                 'The email address is already in use by another account.'
                             )
+                        } else if (err.message === 'The password must be 6 characters long or more.') {
+                            Alert.alert(
+                                'Password Error',
+                                'The password must be 6 characters long or more.'
+                            )
                         }
                     }
                 )
+        } else if (!this.checkIfFieldIsEmpty()) {
+            Alert.alert(
+                'Required Fileds',
+                'Field(s) marked with * are required.'
+            )
         } else {
             Alert.alert(
                 'Password Error',
-                'TPasswords do not match.'
+                'Passwords do not match.'
             )
         }
     }
@@ -61,43 +76,48 @@ export default class RegisterScreen extends React.Component {
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <ScrollView>
                     <Container >
+                        <Label style={{ justifyContent: 'center', textAlign: 'center', fontSize: 14 }}>Field(s) marked with * are required.</Label>
+                        <Label style={{ justifyContent: 'center', textAlign: 'center', fontSize: 14 }}>The password must be 6 characters long or more.</Label>
                         <Form>
                             <Item floatingLabel>
-                                <Label>Name</Label>
+                                <Label>Name *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(name) => this.setState({ name })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Surname</Label>
+                                <Label>Surname *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(surname) => this.setState({ surname })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Company</Label>
+                                <Label>Company *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     onChangeText={(company) => this.setState({ company })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Tel</Label>
+                                <Label>Tel *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
+                                    keyboardType="phone-pad"
                                     onChangeText={(tel) => this.setState({ tel })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Email</Label>
+                                <Label>Email *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
+                                    keyboardType="email-address"
                                     onChangeText={(email) => this.setState({ email })} />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Password</Label>
+                                <Label>Password *</Label>
                                 <Input
                                     secureTextEntry={true}
                                     autoCapitalize="none"
                                     autoCorrect={false}
+                                    placeholder="Password minimum lenght is 6."
                                     onChangeText={(password) => this.setState({ password })}
                                 />
                             </Item>
                             <Item floatingLabel>
-                                <Label>Confirm Password</Label>
+                                <Label>Confirm Password *</Label>
                                 <Input
                                     secureTextEntry={true}
                                     autoCapitalize="none"

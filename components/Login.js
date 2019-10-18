@@ -17,24 +17,36 @@ export default class LoginScreen extends React.Component {
         }
     }
 
+    isEmptyNotField() {
+        return !!this.state.email && this.state.password;
+    }
+
     async _login() {
-        this.appService.singInFireBase(this.state.email, this.state.password)
-            .then(
-                (res) => {
-                    this.appService.getUserDetails(res.user.uid);
-                    this.setState({
-                        email: '',
-                        password: ''
-                    });
-                    this.props.navigation.navigate('CommissionScreen');
-                },
-                err => {
-                    Alert.alert(
-                        'Login Error',
-                        'Invalid email / password.'
-                    )
-                }
+        if (!this.isEmptyNotField()) {
+            Alert.alert(
+                'Required Fileds',
+                'Field(s) marked with * are required.'
             )
+        } else {
+            this.appService.singInFireBase(this.state.email, this.state.password)
+                .then(
+                    (res) => {
+                        this.appService.getUserDetails(res.user.uid);
+                        this.setState({
+                            email: '',
+                            password: ''
+                        });
+                        this.props.navigation.navigate('CommissionScreen');
+                    },
+                    err => {
+                        Alert.alert(
+                            'Login Error',
+                            'Invalid email / password.'
+                        )
+                    }
+                )
+        }
+
     }
     render() {
         return (

@@ -35,12 +35,15 @@ export default class MeterAccuracyTest extends React.Component {
             speed_test_result: 'No',
             ct: 'No',
             netelek_system_op: 'No',
-            // commissionInfoData: {},
             reading_optical_eye: '',
             reading_software: ''
         }
     }
-
+    isNotEmpty() {
+        return !!this.state.meter && this.state.modem && this.state.netelek
+            && this.state.speed_test_result && this.state.ct && this.state.netelek_system_op &&
+            this.state.reading_optical_eye && this.state.reading_software;
+    }
     onNetelekSystemOpChange(value) {
         this.setState({
             netelek_system_op: value
@@ -77,24 +80,25 @@ export default class MeterAccuracyTest extends React.Component {
         })
     }
 
-    componentDidMount() {
-        // this.setState({
-        //     commissionInfoData: this.comInfoData
-        // });
-    }
-
     async next() {
-        let dataObject = this.state;
-        this.props.navigation.navigate('CommentScreen',
-            { MeterAccuracy: dataObject });
+        if (!this.isNotEmpty()) {
+            Alert.alert(
+                'Required Fileds',
+                'Field(s) marked with * are required.'
+            )
+        } else {
+            let dataObject = this.state;
+            this.props.navigation.navigate('CommentScreen',
+                { MeterAccuracy: dataObject });
 
-        AsyncStorage.setItem('MeterAccurey', JSON.stringify(dataObject), async () => {
-            AsyncStorage.mergeItem('MeterAccurey', await AsyncStorage.getItem('Commissioning'), () => {
-                AsyncStorage.getItem('MeterAccurey', (err, result) => {
-                   // console.log('data: ',result);
+            AsyncStorage.setItem('MeterAccurey', JSON.stringify(dataObject), async () => {
+                AsyncStorage.mergeItem('MeterAccurey', await AsyncStorage.getItem('Commissioning'), () => {
+                    AsyncStorage.getItem('MeterAccurey', (err, result) => {
+                        // console.log('data: ',result);
+                    });
                 });
             });
-        });
+        }
     }
 
     render() {
@@ -104,16 +108,16 @@ export default class MeterAccuracyTest extends React.Component {
                     <ScrollView>
                         <Content style={{ marginBottom: 15 }}>
                             <Form>
-                                <Label>Reading on Optical Eye</Label>
+                                <Label>Reading on Optical Eye *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
                                     onChangeText={(reading_optical_eye) => this.setState({ reading_optical_eye })} />
 
-                                <Label>Reading On Software </Label>
+                                <Label>Reading On Software *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
                                     onChangeText={(reading_software) => this.setState({ reading_software })} />
 
-                                <Label>Meter</Label>
+                                <Label>Meter *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -123,7 +127,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Modem</Label>
+                                <Label>Modem *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -133,7 +137,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Netelek</Label>
+                                <Label>Netelek *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -143,7 +147,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Speed Test Result</Label>
+                                <Label>Speed Test Result *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -153,7 +157,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Current Transfomers</Label>
+                                <Label>Current Transfomers *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
@@ -163,7 +167,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     <Item label="No" value="No" />
                                 </Picker>
 
-                                <Label>Netelek System Operational</Label>
+                                <Label>Netelek System Operational *</Label>
                                 <Picker
                                     iosHeader="Select one"
                                     mode="dropdown"
