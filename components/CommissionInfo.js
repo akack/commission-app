@@ -133,7 +133,8 @@ export default class CommissionInfoScreen extends React.Component {
                             <Form>
                                 <Label>Meter Number *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
-                                    onChangeText={(meter_number) => this.setState({ meter_number })} />
+                                    onChangeText={(meter_number) => this.setState({ meter_number })} 
+                                   value={this.state.meter_number} />
 
                                 <Label>Meter Type *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
