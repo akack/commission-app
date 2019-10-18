@@ -98,6 +98,10 @@ export default class MeterAccuracyTest extends React.Component {
                     });
                 });
             });
+            this.setState({
+                reading_optical_eye: '',
+                reading_software: ''
+            })
         }
     }
 
@@ -110,12 +114,14 @@ export default class MeterAccuracyTest extends React.Component {
                             <Form>
                                 <Label>Reading on Optical Eye *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
-                                    onChangeText={(reading_optical_eye) => this.setState({ reading_optical_eye })} />
+                                    onChangeText={(reading_optical_eye) => this.setState({ reading_optical_eye })}
+                                    value={this.state.reading_optical_eye} />
 
                                 <Label>Reading On Software *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
                                     style={styles.inputStyle}
-                                    onChangeText={(reading_software) => this.setState({ reading_software })} />
+                                    onChangeText={(reading_software) => this.setState({ reading_software })}
+                                    value={this.state.reading_software} />
 
                                 <Label>Meter *</Label>
                                 <Picker

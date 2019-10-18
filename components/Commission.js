@@ -60,6 +60,15 @@ export default class CommissionScreen extends React.Component {
             this.props.navigation.navigate('CommissionInfoScreen',
                 { CommissionData: dataObject });
             AsyncStorage.setItem('CommissioningData', JSON.stringify(dataObject));
+            this.setState({
+                commission_date: '',
+                technician_name: '',
+                site_contact_name: '',
+                site_address: '',
+                site_description: '',
+                site_type: '',
+                view_number: ''
+            })
         }
     }
 
@@ -85,37 +94,48 @@ export default class CommissionScreen extends React.Component {
                                     placeHolderTextStyle={{ color: "#d3d3d3" }}
                                     onDateChange={(commission_date) => this.setState({ commission_date })}
                                     disabled={false}
+                                    value={this.state.commission_date}
                                 />
                             </Item>
                             <Item floatingLabel>
                                 <Label>Technician Full Name *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(technician_name) => this.setState({ technician_name })} />
+                                    onChangeText={(technician_name) => this.setState({ technician_name })}
+                                    value={this.state.technician_name} />
                             </Item>
                             <Item floatingLabel>
                                 <Label>Site Contact Name *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(site_contact_name) => this.setState({ site_contact_name })} />
+                                    onChangeText={(site_contact_name) => this.setState({ site_contact_name })}
+                                    value={this.state.site_contact_name} />
                             </Item>
                             <Item floatingLabel>
                                 <Label>Site Address *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(site_address) => this.setState({ site_address })} />
+                                    onChangeText={(site_address) => this.setState({ site_address })} 
+                                    value={this.state.site_address}/>
                             </Item>
                             <Item floatingLabel>
                                 <Label>Site Description *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(site_description) => this.setState({ site_description })} />
+                                    onChangeText={(site_description) => this.setState({ site_description })}
+                                    value={this.state.site_description} />
                             </Item>
                             <Item floatingLabel>
                                 <Label>Site Type *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(site_type) => this.setState({ site_type })} />
+                                    onChangeText={(site_type) => this.setState({ site_type })} 
+                                    value={this.state.site_type}
+                                    />
                             </Item>
                             <Item floatingLabel>
                                 <Label>View Number *</Label>
-                                <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(view_number) => this.setState({ view_number, isFormValid: true })} />
+                                <Input
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                    onChangeText={(view_number) => this.setState({ view_number, isFormValid: true })}
+                                    value={this.state.view_number}
+                                />
                             </Item>
                             <Button full rounded success style={{ marginTop: 10 }} onPress={() => {
                                 this._commissionNext();
