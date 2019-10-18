@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         padding: 10,
-        marginTop: 20
+        marginTop: 10
     },
     inputStyle: {
         height: 35,

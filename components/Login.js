@@ -21,6 +21,13 @@ export default class LoginScreen extends React.Component {
         return !!this.state.email && this.state.password;
     }
 
+    componentDidMount() {
+        this.setState({
+            email: '',
+            password: ''
+        });
+    }
+
     async _login() {
         if (!this.isEmptyNotField()) {
             Alert.alert(
@@ -32,6 +39,7 @@ export default class LoginScreen extends React.Component {
                 .then(
                     (res) => {
                         this.appService.getUserDetails(res.user.uid);
+
                         this.setState({
                             email: '',
                             password: ''
@@ -56,18 +64,21 @@ export default class LoginScreen extends React.Component {
                         <View style={{
                             justifyContent: 'center',
                             textAlign: 'center',
-                            alignItems:'center',
+                            alignItems: 'center',
                             marginBottom: 15,
                             flexDirection: 'column',
                         }}>
-                            <Image source={require('../assets/img/logo.png')} resizeMode={'center'} style={{ width: 120, height: 120}} />
+                            <Image source={require('../assets/img/logo.png')} resizeMode={'center'} style={{ width: 120, height: 120 }} />
                         </View>
                         <Label style={{ justifyContent: 'center', textAlign: 'center', fontSize: 14 }}>Field(s) marked with * are required.</Label>
                         <Form>
                             <Item floatingLabel>
                                 <Label>Email *</Label>
-                                <Input autoCapitalize="none" autoCorrect={false}
-                                    onChangeText={(email) => this.setState({ email })} />
+                                <Input autoCapitalize="none"
+                                    autoCorrect={false}
+                                    clearButtonMode="always"
+                                    onChangeText={(email) => this.setState({ email })}
+                                    value={this.state.email} />
                             </Item>
                             <Item floatingLabel>
                                 <Label>Password *</Label>
@@ -75,7 +86,9 @@ export default class LoginScreen extends React.Component {
                                     secureTextEntry={true}
                                     autoCapitalize="none"
                                     autoCorrect={false}
+                                    clearButtonMode="always"
                                     onChangeText={(password) => this.setState({ password })}
+                                    value={this.state.password}
                                 />
                             </Item>
                             <Button full rounded success style={{ marginTop: 20 }} onPress={() => {
