@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, KeyboardAvoidingView, Image } from 'react-native';
 import { AppService } from '../app.service';
 
 import { Container, Item, Form, Input, Button, Label } from "native-base";
@@ -53,7 +53,16 @@ export default class LoginScreen extends React.Component {
             <KeyboardAvoidingView behavior="padding" enabled>
                 <ScrollView>
                     <Container style={styles.container}>
-                        <Label style={{ justifyContent: 'center', textAlign: 'center' }}>Field(s) marked with * are required.</Label>
+                        <View style={{
+                            justifyContent: 'center',
+                            textAlign: 'center',
+                            alignItems:'center',
+                            marginBottom: 15,
+                            flexDirection: 'column',
+                        }}>
+                            <Image source={require('../assets/img/logo.png')} resizeMode={'center'} style={{ width: 120, height: 120}} />
+                        </View>
+                        <Label style={{ justifyContent: 'center', textAlign: 'center', fontSize: 14 }}>Field(s) marked with * are required.</Label>
                         <Form>
                             <Item floatingLabel>
                                 <Label>Email *</Label>

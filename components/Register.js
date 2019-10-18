@@ -77,7 +77,7 @@ export default class RegisterScreen extends React.Component {
                 <ScrollView>
                     <Container >
                         <Label style={{ justifyContent: 'center', textAlign: 'center', fontSize: 14 }}>Field(s) marked with * are required.</Label>
-                        <Label style={{ justifyContent: 'center', textAlign: 'center', fontSize: 14 }}>The password must be 6 characters long or more.</Label>
+                        <Label style={{ justifyContent: 'center', textAlign: 'center', fontSize: 14, color: 'green' }}>The password must be 6 characters long or more.</Label>
                         <Form>
                             <Item floatingLabel>
                                 <Label>Name *</Label>
