@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, KeyboardAvoidingView, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, KeyboardAvoidingView, Image } from 'react-native';
 import { AppService } from '../app.service';
-
-import { Container, Item, Form, Input, Button, Label } from "native-base";
-
+import { Container, Item, Form, Input, Button, Label, Spinner } from "native-base";
 export default class LoginScreen extends React.Component {
     appService = new AppService;
+    error = false;
+    isLoadin = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -13,22 +13,21 @@ export default class LoginScreen extends React.Component {
             password: '',
             isloading: false,
             emailPlaceholder: 'Email...',
-            passswordPlaceholder: 'Password...'
+            passswordPlaceholder: 'Password...',
+            err: false
         }
+        this._login = this._login.bind(this);
     }
 
     isEmptyNotField() {
-        return !!this.state.email && this.state.password;
+        return !!this.state.email && !!this.state.password;
     }
 
-    componentDidMount() {
-        this.setState({
-            email: '',
-            password: ''
-        });
+    goToError = () => {
+        this.props.navigation.navigate('ErrorScreen');
     }
 
-    async _login() {
+    _login = async () => {
         if (!this.isEmptyNotField()) {
             Alert.alert(
                 'Required Fileds',
@@ -38,15 +37,60 @@ export default class LoginScreen extends React.Component {
             this.appService.singInFireBase(this.state.email, this.state.password)
                 .then(
                     (res) => {
-                        this.appService.getUserDetails(res.user.uid);
-
                         this.setState({
-                            email: '',
-                            password: ''
-                        });
-                        this.props.navigation.navigate('CommissionScreen');
+                            isloading: true
+                        })
+                        this.appService.getUserDetails(res.user.uid)
+                            .then(
+                                res => {
+                                    if (res === true) {
+                                        this.setState({
+                                            email: '',
+                                            password: '',
+                                            isloading: false
+                                        });
+                                        this.props.navigation.navigate('CommissionScreen');
+                                    } else {
+                                        this.setState({
+                                            isloading: false
+                                        })
+                                        Alert.alert(
+                                            'Error Login',
+                                            'Something went wrong, Please try again later.',
+                                            [{
+                                                text: 'Ok', onPress: () => {
+                                                    this.setState({
+                                                        email: '',
+                                                        password: ''
+                                                    })
+                                                }
+                                            }]
+
+                                        )
+                                    }
+                                },
+                                err => {
+                                    this.setState({
+                                        isloading: false
+                                    })
+                                    Alert.alert(
+                                        'Error Login',
+                                        'Something went wrong, Please try again later.',
+                                        [{
+                                            text: 'Ok', onPress: () => {
+                                                this.setState({
+                                                    email: '',
+                                                    password: ''
+                                                })
+                                            }
+                                        }]
+
+                                    )
+                                }
+                            )
                     },
                     err => {
+                        console.log(err)
                         Alert.alert(
                             'Login Error',
                             'Invalid email / password.'
@@ -57,10 +101,23 @@ export default class LoginScreen extends React.Component {
 
     }
     render() {
+        if (this.state.isloading) {
+            <View style={styles.container}>
+                <Spinner color='green' />
+            </View>
+        }
         return (
             <KeyboardAvoidingView behavior="padding" enabled>
                 <ScrollView>
-                    <Container style={styles.container}>
+                    <Container style={{
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'stretch',
+                        backgroundColor: '#fff',
+                        textAlign: 'center',
+                        paddingHorizontal: 15
+                    }}>
                         <View style={{
                             justifyContent: 'center',
                             textAlign: 'center',
@@ -121,6 +178,10 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 5,
         color: 'blue'
+    },
+    errMesage: {
+        fontSize: 18,
+        color: 'red'
     },
     container: {
         flex: 1,

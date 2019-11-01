@@ -9,6 +9,21 @@ export default class RegisterScreen extends React.Component {
     appService = new AppService;
     isPasswordMatch = false;
     emailExist = false;
+
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: <Text style={{
+            alignSelf: 'center',
+            fontSize: 18,
+            justifyContent: 'center',
+            flex: 1,
+            alignItems: 'center', 
+            flexDirection: 'column',
+            textAlign: 'center',
+            fontWeight: 'bold'
+        }}>
+        Registration
+        </Text>
+    })
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +34,8 @@ export default class RegisterScreen extends React.Component {
             surname: '',
             company: '',
             tel: '',
-            uidFB: ''
+            uidFB: '',
+            isAdmin: false
         }
     }
 
@@ -39,8 +55,43 @@ export default class RegisterScreen extends React.Component {
                         this.setState({
                             uidFB: res.user.uid
                         });
-                        this.appService.addUserToDB(this.state);
-                        this.props.navigation.navigate('LoginScreen');
+                        this.appService.addUserToDB(this.state)
+                            .then(
+                                res => {
+                                    if (res === true) {
+                                        this.props.navigation.navigate('LoginScreen');
+                                        this.setState({
+                                            email: '',
+                                            password: '',
+                                            confirm: '',
+                                            name: '',
+                                            surname: '',
+                                            company: '',
+                                            tel: '',
+                                            uidFB: ''
+                                        })
+                                    } else {
+                                        Alert.alert(
+                                            'Error Registering',
+                                            'Something went wrong, Please try again later.',
+                                            [{
+                                                text: 'Ok', onPress: () => {
+                                                    this.setState({
+                                                        email: '',
+                                                        password: '',
+                                                        confirm: '',
+                                                        name: '',
+                                                        surname: '',
+                                                        company: '',
+                                                        tel: '',
+                                                        uidFB: ''
+                                                    })
+                                                }
+                                            }]
+                                        )
+                                    }
+                                }
+                            )
                     },
                     err => {
                         if (err.message === 'The email address is already in use by another account.') {
@@ -54,6 +105,7 @@ export default class RegisterScreen extends React.Component {
                                 'The password must be 6 characters long or more.'
                             )
                         }
+                        console.log('Error', err)
                     }
                 )
         } else if (!this.checkIfFieldIsEmpty()) {

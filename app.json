@@ -17,6 +17,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "android": {
+      "package": "za.co.voltex.commissioning.app"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },

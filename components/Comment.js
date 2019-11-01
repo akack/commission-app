@@ -1,74 +1,115 @@
 import React from 'react';
-import { Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, View, AsyncStorage, Image } from 'react-native';
+import { Text, StyleSheet, Alert, ScrollView, KeyboardAvoidingView, View, AsyncStorage, Image, TouchableOpacity } from 'react-native';
 import { Container, Form, Input, Button, Label, Icon, Picker, Content, Textarea } from "native-base";
 import { AppService } from '../app.service';
+
 export default class CommentScreen extends React.Component {
     comInfoData = {};
 
     appService = new AppService;
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: (
-                <Text style={{ padding: 15, color: 'red' }}
-                    onPress={() => {
-                        Alert.alert(
-                            'Logout Alert',
-                            'Are you sure you want to logout?',
-                            [
-                                { text: 'Ok', onPress: () => navigation.navigate('LogoutScreen') }
-                            ],
-                            { cancelable: false }
-                        )
-                    }}>
-                    LOGOUT
-                </Text>
-            )
-        };
-    }
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: <Text style={{
+            alignSelf: 'center',
+            fontSize: 18,
+            justifyContent: 'center',
+            flex: 1,
+            alignItems: 'center',
+            flexDirection: 'column',
+            textAlign: 'center',
+            fontWeight: 'bold'
+        }}>
+            Submission
+        </Text>,
+        headerRight: (
+            <TouchableOpacity style={{ padding: 15, color: 'red' }}
+                onPress={() => {
+                    Alert.alert(
+                        'Logout Alert',
+                        'Are you sure you want to logout?',
+                        [
+                            { text: 'Ok', onPress: () => navigation.navigate('LogoutScreen') },
+                            { text: 'Cancel', onPress: () => console.log('Canceled') }
+
+                        ],
+                        { cancelable: false }
+                    )
+
+                }}>
+                <Image source={require('../assets/img/logout.jpg')} style={{ width: 35, height: 35, paddingVertical: 10 }} />
+            </TouchableOpacity>
+        )
+    })
     constructor(props) {
         super(props);
         this.state = {
             comment: '',
-            signature: '',
-            name: '',
-            isSub: false
+            authorised_name: '',
+            isSub: false,
+            uidFB: ''
         }
+        this._submit = this._submit.bind(this);
     }
 
     isNotEmpty() {
-        return !!this.state.comment && this.state.name;
+        return !!this.state.comment && this.state.authorised_name;
     }
 
-    _submit() {
+    _submit = async () => {
         if (!this.isNotEmpty()) {
             Alert.alert(
                 'Required Fileds',
                 'Field(s) marked with * are required.'
             )
         } else {
+            let user = await AsyncStorage.getItem('user');
+            let userD = JSON.parse(user);
+            this.setState({
+                uidFB: userD[0].uidFB
+            })
             let dataObject = this.state;
             AsyncStorage.setItem('CommissioningSheetData', JSON.stringify(dataObject), async () => {
                 AsyncStorage.mergeItem('CommissioningSheetData', await AsyncStorage.getItem('MeterAccurey'), () => {
                     AsyncStorage.getItem('CommissioningSheetData', (err, result) => {
                         //console.log('CommissioningSheetData: ',result);
-                        this.appService.StoreCommissionDataToDB(result)
+                        this.appService.StoreCommissionDataToDB(JSON.parse(result))
                             .then(
                                 async res => {
-                                    if (res === 'true') {
+                                    if (res === true) {
                                         console.log('Submitted Data Successfully.');
                                         Alert.alert(
                                             'Success',
                                             'Successfully submitted your form. Thank you.',
                                             [
-                                                { text: 'OK', onPress: () => this.props.navigation.navigate('CommissionScreen') },
+                                                {
+                                                    text: 'OK', onPress: () => {
+                                                        this.props.navigation.navigate('CommissionScreen');
+                                                        this.setState({
+                                                            comment: '',
+                                                            authorised_name: '',
+                                                            isSub: false,
+                                                            uidFB: ''
+                                                        })
+                                                    }
+                                                },
                                             ],
                                             { cancelable: false }
                                         );
 
                                         let keys = ['CommissioningData', 'Commissioning', 'CommissioningSheetData'];
                                         await AsyncStorage.multiRemove(keys, (err) => {
-                                            console, log('Success');
+                                            console.log('deleted keys successfully');
                                         });
+                                    } else {
+                                        Alert.alert(
+                                            'Error Submitting Sheet',
+                                            'Something went wrong, Please try again later.',
+                                            [{
+                                                text: 'Ok', onPress: () => {
+                                                    console.log('Error submitting data.')
+                                                }
+                                            }]
+
+                                        )
                                     }
                                 },
                                 err => {
@@ -104,14 +145,11 @@ export default class CommentScreen extends React.Component {
                                         })
                                     } />
 
-                                <Label>Name and Surname *</Label>
+                                <Label>Authorised Person: Fullname *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
-                                    onChangeText={(name) => this.setState({ name })} />
+                                    onChangeText={(authorised_name) => this.setState({ authorised_name })} />
 
-                                <Label>Sign here</Label>
-                                <View style={{ margin: 8 }}>
 
-                                </View>
                                 <Button full rounded success onPress={() => {
                                     this._submit();
                                 }}>

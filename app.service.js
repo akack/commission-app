@@ -1,16 +1,19 @@
 import React from "react";
 import {
-    AsyncStorage,
-    Alert,
-    Platform
+    AsyncStorage
 } from 'react-native';
 import * as firebase from "firebase";
 
 
 export class AppService {
-    addUserToDBUrl = 'http://10.0.2.2:3000/add_user_to_db';
-    getUserDetailsUrl = 'http://10.0.2.2:3000/get_user_details';
-    addCommissioningDataUrl = 'http://10.0.2.2:3000/store_commission_sheet';
+    addUserToDBUrl = 'https://fm2rj65ye9.execute-api.us-east-1.amazonaws.com/dev/add_user_to_db';
+    getUserDetailsUrl = 'https://fm2rj65ye9.execute-api.us-east-1.amazonaws.com/dev/get_user_details';
+    saveCommisionSheetUrl = 'https://fm2rj65ye9.execute-api.us-east-1.amazonaws.com/dev/save_commission_sheet';
+    /*
+     POST - https://fm2rj65ye9.execute-api.us-east-1.amazonaws.com/dev/add_user_to_db
+        GET - https://fm2rj65ye9.execute-api.us-east-1.amazonaws.com/dev/get_user_details/{uidFB}
+        POST - https://fm2rj65ye9.execute-api.us-east-1.amazonaws.com/dev/save_commission_sheet
+    */
 
     signUpFireBase(email, password) {
         return firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -21,23 +24,19 @@ export class AppService {
     }
 
     async StoreCommissionDataToDB(data) {
-        const results = await fetch(this.addCommissioningDataUrl, {
+        const results = await fetch(this.saveCommisionSheetUrl, {
             method: 'Post',
             body: JSON.stringify(data),
             headers: new Headers({
                 'Content-Type': 'application/json',
             })
         })
-        let sumbmitted = '';
-        const savedCom = await results.json();
-        if (results.status === 200) {
-            console.log("Save Data to DB: ");
-            sumbmitted = 'true';
-        } else {
-            console.error("Error saving data");
-            sumbmitted = 'false';
+        let sumbmitted = true;
+        const commission = await results.json();
+        if (commission.errorMessage === 'Error while loading GetUserDetails') {
+            sumbmitted = false;
         }
-        return sumbmitted;
+        return sumbmitted
     }
 
     async addUserToDB(user) {
@@ -48,13 +47,12 @@ export class AppService {
                 'Content-Type': 'application/json',
             })
         })
-        const savedCom = await results.json();
-        if (results.status === 200) {
-            console.log("Saved User to DB: ");
-        }else {
-            console.error('Error Saving DUser')
+        let sumbmitted = true;
+        const userDetails = await results.json();
+        if (userDetails.errorMessage === 'Error while loading GetUserDetails') {
+            sumbmitted = false;
         }
-
+        return sumbmitted
     }
 
     async getUserDetails(uid) {
@@ -66,6 +64,11 @@ export class AppService {
         })
         const userDetails = await results.json();
         AsyncStorage.setItem('user', JSON.stringify(userDetails));
+        let sumbmitted = true;
+        if (userDetails.errorMessage === 'Error while loading GetUserDetails') {
+            sumbmitted = false;
+        }
+        return sumbmitted
     }
 
     async logout() {

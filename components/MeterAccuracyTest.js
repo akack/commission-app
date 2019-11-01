@@ -1,40 +1,52 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, AsyncStorage } from 'react-native';
-import { Container, Form, Input, Button, Label, Icon, Picker, Content } from "native-base";
+import { View, Text, StyleSheet, TouchableOpacity, Alert, AsyncStorage, Image } from 'react-native';
+import { Container, Form, Input, Button, Label, Picker, Content } from "native-base";
 import { KeyboardAvoidingView, ScrollView } from 'react-native';
 const Item = Picker.Item;
 export default class MeterAccuracyTest extends React.Component {
     comInfoData = {};
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: (
-                <Text style={{ padding: 15, color: 'red' }}
-                    onPress={() => {
-                        Alert.alert(
-                            'Logout Alert',
-                            'Are you sure you want to logout?',
-                            [
-                                { text: 'Ok', onPress: () => navigation.navigate('LogoutScreen') }
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: <Text style={{
+            alignSelf: 'center',
+            fontSize: 18,
+            justifyContent: 'center',
+            flex: 1,
+            alignItems: 'center',
+            flexDirection: 'column',
+            textAlign: 'center',
+            fontWeight: 'bold'
+        }}>
+            Meter Accuracy Test
+        </Text>,
+        headerRight: (
+            <TouchableOpacity style={{ padding: 15, color: 'red' }}
+                onPress={() => {
+                    Alert.alert(
+                        'Logout Alert',
+                        'Are you sure you want to logout?',
+                        [
+                            { text: 'Ok', onPress: () => navigation.navigate('LogoutScreen') },
+                            { text: 'Cancel', onPress: () => console.log('Canceled') }
 
-                            ],
-                            { cancelable: false }
-                        )
-                    }}>
-                    LOGOUT
-                </Text>
-            )
-        };
-    }
+                        ],
+                        { cancelable: false }
+                    )
+
+                }}>
+                <Image source={require('../assets/img/logout.jpg')} style={{ width: 35, height: 35, paddingVertical: 10 }} />
+            </TouchableOpacity>
+        )
+    })
     constructor(props) {
         super(props);
         this.state = {
-            meter: 'No',
-            modem: 'No',
-            netelek: 'No',
-            speed_test_result: 'No',
-            ct: 'No',
-            netelek_system_op: 'No',
+            meter: '',
+            modem: '',
+            netelek: '',
+            speed_test_result: '',
+            ct: '',
+            netelek_system_op: '',
             reading_optical_eye: '',
             reading_software: ''
         }
@@ -95,6 +107,16 @@ export default class MeterAccuracyTest extends React.Component {
                 AsyncStorage.mergeItem('MeterAccurey', await AsyncStorage.getItem('Commissioning'), () => {
                     AsyncStorage.getItem('MeterAccurey', (err, result) => {
                         // console.log('data: ',result);
+                        this.setState({
+                            meter: '',
+                            modem: '',
+                            netelek: '',
+                            speed_test_result: '',
+                            ct: '',
+                            netelek_system_op: '',
+                            reading_optical_eye: '',
+                            reading_software: ''
+                        })
                     });
                 });
             });
@@ -129,6 +151,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.meter}
                                     onValueChange={this.onMeterChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -139,6 +162,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.modem}
                                     onValueChange={this.onModemChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -149,6 +173,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.netelek}
                                     onValueChange={this.onNetelekChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -159,6 +184,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.speed_test_result}
                                     onValueChange={this.onSpeedTestResultChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -169,6 +195,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.ct}
                                     onValueChange={this.onCTChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -179,6 +206,7 @@ export default class MeterAccuracyTest extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.netelek_system_op}
                                     onValueChange={this.onNetelekSystemOpChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>

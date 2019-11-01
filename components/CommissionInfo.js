@@ -1,52 +1,63 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, AsyncStorage } from 'react-native';
-import DatePicker from 'react-native-datepicker';
-import { Container, Form, Input, Button, Label, Icon, Picker, Content } from "native-base";
+import { View, Text, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, AsyncStorage, Image,TouchableOpacity} from 'react-native';
+import { Container, Form, Input, Button, Label, Picker, Content } from "native-base";
 const Item = Picker.Item;
 export default class CommissionInfoScreen extends React.Component {
     comData = {};
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: (
-                <Text style={{ padding: 15, color: 'red' }}
-                    onPress={() => {
-                        Alert.alert(
-                            'Logout Alert',
-                            'Are you sure you want to logout?',
-                            [
-                                { text: 'Ok', onPress: () => navigation.navigate('LogoutScreen') }
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: <Text style={{
+            alignSelf: 'center',
+            fontSize: 18,
+            justifyContent: 'center',
+            flex: 1,
+            alignItems: 'center',
+            flexDirection: 'column',
+            textAlign: 'center',
+            fontWeight: 'bold'
+        }}>
+            Commissioning Information
+        </Text>,
+        headerRight: (
+            <TouchableOpacity style={{ padding: 15, color: 'red' }}
+                onPress={() => {
+                    Alert.alert(
+                        'Logout Alert',
+                        'Are you sure you want to logout?',
+                        [
+                            { text: 'Ok', onPress: () => navigation.navigate('LogoutScreen') },
+                            { text: 'Cancel', onPress: () => console.log('Canceled') }
 
-                            ],
-                            { cancelable: false }
-                        )
+                        ],
+                        { cancelable: false }
+                    )
 
-                    }}>
-                    LOGOUT
-                </Text>
-            )
-        };
-    }
+                }}>
+                <Image source={require('../assets/img/logout.jpg')} style={{ width: 35, height: 35, paddingVertical: 10 }} />
+            </TouchableOpacity>
+        )
+    })
     constructor(props) {
         super(props);
         this.state = {
             meter_number: '',
-            Antenna: 'No',
-            CT_Visible: 'No',
+            Antenna: '',
+            CT_Visible: '',
             CT_Ratio: '',
-            APN_correct: 'No',
+            APN_correct: '',
             meter_type: '',
             modem_number: '',
             sim_card_no: '',
-            meter_physical_location: 'No',
+            meter_physical_location: '',
             meter_report: 'No',
-            speed_test_done: 'No',
-            ping: 'No',
+            speed_test_done: '',
+            ping: '',
             speed_vodacom: '',
             speed_mtn: '',
             port_number: '',
-            meter_commissioning_report: 'No',
-            down_load_his_data: 'No',
+            meter_commissioning_report: '',
+            down_load_his_data: '',
+            gms_signal: ''
         }
     }
 
@@ -55,7 +66,7 @@ export default class CommissionInfoScreen extends React.Component {
             && this.state.APN_correct && this.state.meter_type && this.state.modem_number && this.state.sim_card_no
             && this.state.meter_physical_location && this.state.meter_report && this.state.speed_test_done && this.state.ping
             && this.state.speed_vodacom && this.state.speed_mtn && this.state.port_number && this.state.meter_commissioning_report
-            && this.state.down_load_his_data;
+            && this.state.down_load_his_data && this.state.gms_signal;
     }
     onMeterComReport(value) {
         this.setState({
@@ -101,7 +112,11 @@ export default class CommissionInfoScreen extends React.Component {
             meter_report: value
         })
     }
-
+    onGSMSignalChange(value) {
+        this.setState({
+            gms_signal: value
+        })
+    }
     async _commissionNext() {
         if (!this.isNotEmpty()) {
             Alert.alert(
@@ -117,6 +132,25 @@ export default class CommissionInfoScreen extends React.Component {
                 AsyncStorage.mergeItem('Commissioning', await AsyncStorage.getItem('CommissioningData'), () => {
                     AsyncStorage.getItem('Commissioning', (err, result) => {
                         // console.log(result);
+                        this.setState({
+                            meter_number: '',
+                            Antenna: '',
+                            CT_Visible: '',
+                            CT_Ratio: '',
+                            APN_correct: '',
+                            meter_type: '',
+                            modem_number: '',
+                            sim_card_no: '',
+                            meter_physical_location: '',
+                            meter_report: 'No',
+                            speed_test_done: '',
+                            ping: '',
+                            speed_vodacom: '',
+                            speed_mtn: '',
+                            port_number: '',
+                            meter_commissioning_report: '',
+                            down_load_his_data: ''
+                        })
                     });
                 });
             });
@@ -133,8 +167,8 @@ export default class CommissionInfoScreen extends React.Component {
                             <Form>
                                 <Label>Meter Number *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false} style={styles.inputStyle}
-                                    onChangeText={(meter_number) => this.setState({ meter_number })} 
-                                   value={this.state.meter_number} />
+                                    onChangeText={(meter_number) => this.setState({ meter_number })}
+                                    value={this.state.meter_number} />
 
                                 <Label>Meter Type *</Label>
                                 <Input autoCapitalize="none" autoCorrect={false}
@@ -182,6 +216,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.Antenna}
                                     onValueChange={this.onAntennaChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -192,6 +227,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.CT_Visible}
                                     onValueChange={this.onCTVisibleChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -202,6 +238,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.APN_correct}
                                     onValueChange={this.onAPNCorrectChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -211,6 +248,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.meter_commissioning_report}
                                     onValueChange={this.onMeterComReport.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -221,6 +259,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.speed_test_done}
                                     onValueChange={this.onSpeedTestDone.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -231,6 +270,7 @@ export default class CommissionInfoScreen extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.ping}
                                     onValueChange={this.onPingChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
@@ -241,9 +281,22 @@ export default class CommissionInfoScreen extends React.Component {
                                     mode="dropdown"
                                     selectedValue={this.state.down_load_his_data}
                                     onValueChange={this.onDownlodaDataChange.bind(this)}>
+                                    <Item label="Select" value="" />
                                     <Item label="Yes" value="Yes" />
                                     <Item label="No" value="No" />
                                 </Picker>
+
+                                <Label>GSM Signal "ON" *</Label>
+                                <Picker
+                                    iosHeader="Select one"
+                                    mode="dropdown"
+                                    selectedValue={this.state.gms_signal}
+                                    onValueChange={this.onGSMSignalChange.bind(this)}>
+                                    <Item label="Select" value="" />
+                                    <Item label="Yes" value="Yes" />
+                                    <Item label="No" value="No" />
+                                </Picker>
+
 
                                 <View style={{ marginTop: 10 }} >
                                     <Button full rounded success onPress={() => {

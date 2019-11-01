@@ -6,6 +6,20 @@ import { Container, Item, Form, Input, Button, Label } from "native-base";
 
 export default class ForgotPasswordScreen extends React.Component {
     appService = new AppService;
+    static navigationOptions = ({ navigation }) => ({
+        headerTitle: <Text style={{
+            alignSelf: 'center',
+            fontSize: 18,
+            justifyContent: 'center',
+            flex: 1,
+            alignItems: 'center', 
+            flexDirection: 'column',
+            textAlign: 'center',
+            fontWeight: 'bold'
+        }}>
+        Password Recovery
+        </Text>,
+    })
     constructor(props) {
         super(props);
         this.state = {
